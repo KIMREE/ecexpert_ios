@@ -179,6 +179,7 @@
 		C6AC0D9A1B15BEAD00D716EF /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C6AC0D8C1B15BEAD00D716EF /* SVProgressHUD.bundle */; };
 		C6AC0D9B1B15BEAD00D716EF /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C6AC0D8E1B15BEAD00D716EF /* SVProgressHUD.m */; };
 		C6AC0DA11B15BF5A00D716EF /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C6AC0DA01B15BF5A00D716EF /* MBProgressHUD.m */; };
+		C6AC0DA51B15CB2300D716EF /* UIAlertView+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = C6AC0DA41B15CB2300D716EF /* UIAlertView+Block.m */; };
 		C6AC985318F234F500CCF79C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6AC985218F234F500CCF79C /* Foundation.framework */; };
 		C6AC985518F234F500CCF79C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6AC985418F234F500CCF79C /* CoreGraphics.framework */; };
 		C6AC985718F234F500CCF79C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6AC985618F234F500CCF79C /* UIKit.framework */; };
@@ -606,6 +607,8 @@
 		C6AC0D8E1B15BEAD00D716EF /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		C6AC0D9F1B15BF5A00D716EF /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		C6AC0DA01B15BF5A00D716EF /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		C6AC0DA31B15CB2300D716EF /* UIAlertView+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Block.h"; sourceTree = "<group>"; };
+		C6AC0DA41B15CB2300D716EF /* UIAlertView+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Block.m"; sourceTree = "<group>"; };
 		C6AC984F18F234F500CCF79C /* ECExpert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ECExpert.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6AC985218F234F500CCF79C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C6AC985418F234F500CCF79C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1594,6 +1597,15 @@
 			path = SVProgressHUD;
 			sourceTree = "<group>";
 		};
+		C6AC0DA21B15CA7900D716EF /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				C6AC0DA31B15CB2300D716EF /* UIAlertView+Block.h */,
+				C6AC0DA41B15CB2300D716EF /* UIAlertView+Block.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
 		C6AC984618F234F500CCF79C = {
 			isa = PBXGroup;
 			children = (
@@ -1767,6 +1779,7 @@
 		C6FC20BA1B15B4C900547A0A /* Third */ = {
 			isa = PBXGroup;
 			children = (
+				C6AC0DA21B15CA7900D716EF /* Category */,
 				C6AC0D681B15BB2300D716EF /* MDQRCodeGenerator */,
 				C6AC0D501B15BABF00D716EF /* ZBarSDK */,
 				C6FC22761B15B71700547A0A /* FSCalendar */,
@@ -2685,6 +2698,7 @@
 				C6FC22111B15B65200547A0A /* MJConst.m in Sources */,
 				C6FC22141B15B65200547A0A /* MJType.m in Sources */,
 				6BE462091A15FC8F00A3795B /* NavigationAnimation.m in Sources */,
+				C6AC0DA51B15CB2300D716EF /* UIAlertView+Block.m in Sources */,
 				C6FC22701B15B6E000547A0A /* UIAlertView+AFNetworking.m in Sources */,
 				C6FC22561B15B6D900547A0A /* AFNetworkReachabilityManager.m in Sources */,
 				C6FC21A11B15B4C900547A0A /* JDStatusBarNotification.m in Sources */,
