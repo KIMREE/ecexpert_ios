@@ -47,6 +47,10 @@
 - (void)changeGiftRecord{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"派发赠品" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     
+    [alert showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
+        NSLog(@"%lu", buttonIndex);
+    }];
+    
 }
 
 - (void)initTableView{

@@ -38,6 +38,7 @@
     #import "ASIFormDataRequest.h"
     #import "ASIDownloadCache.h"
     #import "ErrorHelper.h"
+    #import "UIAlertView+Block.h"
 #endif
 
 #define IS_INCH4 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)

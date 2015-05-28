@@ -156,6 +156,7 @@
     
     if (self.selectedIndex==0) {
         
+//        self.nearbyNav.view = nil;
     }else if (self.selectedIndex==1)
     {
         
@@ -163,7 +164,7 @@
     }else if (self.selectedIndex==2)
     {
         
-        
+//        self.nearbyNav.view = nil;
     }
     
     
