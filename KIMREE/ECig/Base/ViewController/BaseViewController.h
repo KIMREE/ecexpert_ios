@@ -25,4 +25,6 @@
 // 背景图片，默认background
 @property (strong, nonatomic) UIImage *backgroundImage;
 
+- (void)goback;
+
 @end

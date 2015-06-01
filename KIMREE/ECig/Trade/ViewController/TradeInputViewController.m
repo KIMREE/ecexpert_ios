@@ -56,6 +56,7 @@
     self.manager = [AFHTTPRequestOperationManager manager];
     [_manager setRequestSerializer:[AFHTTPRequestSerializer serializer]];
     [_manager setResponseSerializer:[AFJSONResponseSerializer serializer]];
+    [self.manager.requestSerializer setTimeoutInterval:10];
     [_manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil]]; // 默认的acceptableContentTypes缺少 text/html, 可以到 AFJSONResponseSerializer 代码223行查看
 }
 
@@ -73,13 +74,27 @@
 - (void)addNewTrade{
     if (self.customerArray.count > 0 && self.productArray.count > 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"录入交易" message:@"确定录入交易信息?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        alert.tag = AlertViewTagAddTrade;
-        [alert show];
+        __unsafe_unretained TradeInputViewController *blockSelf = self;
+        [alert showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                [blockSelf commitAddTradeRecord];
+            }
+        }];
     }else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"录入交易" message:@"录入信息不足，无法完成交易录入" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-        alert.tag = AlertViewTagOneButtonWithNoneAction;
-        [alert show];
+        [alert showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
+            // do nothing
+        }];
     }
+}
+
+- (void)goback{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"放弃修改?" message:@"放弃修改数据?" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+    [alert showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
+        if (buttonIndex == 0) {
+            [super goback];
+        }
+    }];
 }
 
 - (void)initTableView{
@@ -96,7 +111,7 @@
         _h -= 49;
     }
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(_x, _y, _w, _h) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(_x, _y, _w, _h) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -183,7 +198,9 @@
         if (self.giftArray.count > 0) {
             ProductModel *product = [self.giftArray objectAtIndex:indexPath.row];
             cell.textLabel.text = product.productNameZH;
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"总数量:%zi    已派发:%zi",product.totalCount, product.dispatchCount];
+            //            cell.detailTextLabel.text = [NSString stringWithFormat:@"总数量:%zi    已派发:%zi",product.totalCount, product.dispatchCount];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"数量:%zi",product.totalCount];
+            
         }else{
             [self cell:cell WithNoDataText:@"请选择赠品" DeleteButton:deleteBtn];
         }
@@ -207,9 +224,13 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"删除数据" message:@"您确定要删除选中数据?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    alert.tag = AlertViewTagDeleteData;
-    objc_setAssociatedObject(alert, "CellIndexPath", indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    [alert show];
+    __unsafe_unretained TradeInputViewController *blockSelf = self;
+    __unsafe_unretained NSIndexPath *blockIndexPath = indexPath;
+    [alert showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
+        if (buttonIndex == 1) {
+            [blockSelf commitDeleteDataWithIndexPath: blockIndexPath];
+        }
+    }];
 }
 
 
@@ -399,12 +420,12 @@
 
 - (void)addGiftAction{
     
-    ZbarScanViewController *scanVC = [[ZbarScanViewController alloc] init];
+    ScanViewController *scanVC = [[ScanViewController alloc] init];
     scanVC.title = @"扫描赠品条形码";
-//    scanVC.scanType = ScanCodeTypeBarCode;
+    scanVC.scanType = ScanCodeTypeBarCode;
     
     __unsafe_unretained TradeInputViewController *blockSelf = self;
-    scanVC.finishBlock = ^(ZbarScanViewController *vc, NSString *barCode){
+    scanVC.finishBlock = ^(ScanViewController *vc, NSString *barCode){
         // 关闭扫描界面
         [vc goBack];
         
@@ -419,7 +440,7 @@
         if (product) {
             // 如果已经添加过赠品，再次扫描时只增加总数和分派数，不会跳转到详情页
             product.totalCount += 1;
-            product.dispatchCount += 1;
+            //            product.dispatchCount += 1;
             [blockSelf.giftArray removeObject:product];
             [blockSelf.giftArray insertObject:product atIndex:0];
             [blockSelf.tableView reloadData];
@@ -438,9 +459,9 @@
                     NSString *now = [blockSelf.dateFormatter stringFromDate:[NSDate date]];
                     product.scanCode = barCode;
                     product.totalCount = 1;
-                    product.dispatchCount = 1;
-                    product.effectiveDate = [blockSelf.dateFormatter dateFromString:now];
-                    product.expirationDate = [NSDate dateWithTimeInterval:(24*60*60*6) sinceDate:product.effectiveDate];
+                    //                    product.dispatchCount = 1;
+                    //                    product.effectiveDate = [blockSelf.dateFormatter dateFromString:now];
+                    //                    product.expirationDate = [NSDate dateWithTimeInterval:(24*60*60*6) sinceDate:product.effectiveDate];
                     
                     if (blockSelf.giftArray == nil) {
                         blockSelf.giftArray = [NSMutableArray array];
@@ -450,12 +471,12 @@
                     
                     [blockSelf.progressHUD hide:YES];
                     
-                    GiftProductViewController *giftVC = [[GiftProductViewController alloc] init];
-                    giftVC.supTableView = self.tableView;
-                    giftVC.giftArray = self.giftArray;
-                    giftVC.giftProduct = product;
-                    giftVC.pageEditType = GiftPageEditTypeALL;
-                    [self.navigationController pushViewController:giftVC animated:YES];
+                    //                    GiftProductViewController *giftVC = [[GiftProductViewController alloc] init];
+                    //                    giftVC.supTableView = self.tableView;
+                    //                    giftVC.giftArray = self.giftArray;
+                    //                    giftVC.giftProduct = product;
+                    //                    giftVC.pageEditType = GiftPageEditTypeALL;
+                    //                    [self.navigationController pushViewController:giftVC animated:YES];
                 }else{
                     blockSelf.progressHUD.mode = MBProgressHUDModeText;
                     blockSelf.progressHUD.labelText = [NSString stringWithFormat:@"%@",[rootDic objectForKey:@"data"]];
@@ -476,94 +497,80 @@
 }
 
 #pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    
-    if (alertView.tag == AlertViewTagDeleteData) {
-        [self deleteDataAlertView:alertView clickedButtonAtIndex:buttonIndex];
-    }else if (alertView.tag == AlertViewTagAddTrade){
-        [self addTradeAlertView:alertView clickedButtonAtIndex:buttonIndex];
+
+- (void)commitDeleteDataWithIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        [self.customerArray removeObjectAtIndex:indexPath.row];
+    }else if (indexPath.section == 1) {
+        [self.productArray removeObjectAtIndex:indexPath.row];
+    }else if (indexPath.section == 2) {
+        [self.giftArray removeObjectAtIndex:indexPath.row];
     }
     
+    [self.tableView reloadData];
 }
 
-- (void)deleteDataAlertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSIndexPath *indexPath = objc_getAssociatedObject(alertView, "CellIndexPath");
-    if (buttonIndex == 1) {
-        if (indexPath.section == 0) {
-            [self.customerArray removeObjectAtIndex:indexPath.row];
-        }else if (indexPath.section == 1) {
-            [self.productArray removeObjectAtIndex:indexPath.row];
-        }else if (indexPath.section == 2) {
-            [self.giftArray removeObjectAtIndex:indexPath.row];
-        }
-        
-        [self.tableView reloadData];
+- (void)commitAddTradeRecord{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:[[self.customerArray firstObject] objectForKey:@"customer_id"] forKey:@"customer_id"];
+    [params setObject:[[(AppDelegate *)[[UIApplication sharedApplication] delegate] loginUser] objectForKey:@"dealer_id"] forKey:@"dealer_id"];
+    
+    // 主产品
+    NSMutableArray *tradeProducts = [NSMutableArray array];
+    for (ProductModel *product in self.productArray) {
+        NSMutableDictionary *productDic = [NSMutableDictionary dictionary];
+        [productDic setObject:product.scanCode forKey:@"scanCode"];
+        [productDic setObject:[NSNumber numberWithInteger:product.totalCount] forKey:@"totalCount"];
+        [tradeProducts addObject:productDic];
     }
-}
-
-- (void)addTradeAlertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setObject:[[self.customerArray firstObject] objectForKey:@"customer_id"] forKey:@"customer_id"];
-        [params setObject:[[(AppDelegate *)[[UIApplication sharedApplication] delegate] loginUser] objectForKey:@"dealer_id"] forKey:@"dealer_id"];
+    NSData *productsData = [NSJSONSerialization dataWithJSONObject:tradeProducts options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *productsString = [[NSString alloc] initWithData:productsData encoding:NSUTF8StringEncoding];
+    
+    [params setObject:productsString  forKey:@"main_products"];
+    
+    // 赠品
+    NSMutableArray *giftProducts = [NSMutableArray array];
+    for (ProductModel *product in self.giftArray) {
+        NSMutableDictionary *productDic = [NSMutableDictionary dictionary];
+        [productDic setObject:product.scanCode forKey:@"scanCode"];
+        [productDic setObject:[NSNumber numberWithInteger:product.totalCount] forKey:@"totalCount"];
+        //        [productDic setObject:[NSNumber numberWithInteger:product.dispatchCount] forKey:@"dispatchCount"];
+        //        [productDic setObject:product.effectiveDate forKey:@"effectiveDate"];
+        //        [productDic setObject:product.expirationDate forKey:@"expirateDate"];
         
-        // 主产品
-        NSMutableArray *tradeProducts = [NSMutableArray array];
-        for (ProductModel *product in self.productArray) {
-            NSMutableDictionary *productDic = [NSMutableDictionary dictionary];
-            [productDic setObject:product.scanCode forKey:@"scanCode"];
-            [productDic setObject:[NSNumber numberWithInteger:product.totalCount] forKey:@"totalCount"];
-            [tradeProducts addObject:productDic];
-        }
-        NSData *productsData = [NSJSONSerialization dataWithJSONObject:tradeProducts options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *productsString = [[NSString alloc] initWithData:productsData encoding:NSUTF8StringEncoding];
-        
-        [params setObject:productsString  forKey:@"main_products"];
-        
-        // 赠品
-        NSMutableArray *giftProducts = [NSMutableArray array];
-        for (ProductModel *product in self.giftArray) {
-            NSMutableDictionary *productDic = [NSMutableDictionary dictionary];
-            [productDic setObject:product.scanCode forKey:@"scanCode"];
-            [productDic setObject:[NSNumber numberWithInteger:product.totalCount] forKey:@"totalCount"];
-            [productDic setObject:[NSNumber numberWithInteger:product.dispatchCount] forKey:@"dispatchCount"];
-            [productDic setObject:product.effectiveDate forKey:@"effectiveDate"];
-            [productDic setObject:product.expirationDate forKey:@"expirateDate"];
-            
-            [giftProducts addObject:productDic];
-        }
-        NSData *giftData = [NSJSONSerialization dataWithJSONObject:giftProducts options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *giftString = [[NSString alloc] initWithData:giftData encoding:NSUTF8StringEncoding];
-        
-        [params setObject:giftString forKey:@"gift_products"];
-        
-        NSLog(@"%@", params);
-        
-        self.progressHUD.mode = MBProgressHUDModeIndeterminate;
-        self.progressHUD.labelText = @"Loading...";
-        [self.progressHUD show:YES];
-        __unsafe_unretained TradeInputViewController *blockSelf = self;
-        [self.manager POST:API_TRADE_INPUT_URL parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSDictionary *jsonDic = (NSDictionary *)responseObject;
-            NSInteger code = [[jsonDic objectForKey:@"code"] integerValue];
-            if (code == 1) {
-                [blockSelf.navigationController popViewControllerAnimated:YES];
-                blockSelf.progressHUD.mode = MBProgressHUDModeText;
-                blockSelf.progressHUD.labelText = @"OK";
-                [blockSelf.progressHUD hide:YES afterDelay:3];
-            }else{
-                blockSelf.progressHUD.mode = MBProgressHUDModeText;
-                blockSelf.progressHUD.labelText = [jsonDic objectForKey:@"data"];
-                [blockSelf.progressHUD hide:YES afterDelay:3];
-            }
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [giftProducts addObject:productDic];
+    }
+    NSData *giftData = [NSJSONSerialization dataWithJSONObject:giftProducts options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *giftString = [[NSString alloc] initWithData:giftData encoding:NSUTF8StringEncoding];
+    
+    [params setObject:giftString forKey:@"gift_products"];
+    
+    NSLog(@"%@", params);
+    
+    self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+    self.progressHUD.labelText = @"Loading...";
+    [self.progressHUD show:YES];
+    __unsafe_unretained TradeInputViewController *blockSelf = self;
+    [self.manager POST:API_TRADE_INPUT_URL parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *jsonDic = (NSDictionary *)responseObject;
+        NSInteger code = [[jsonDic objectForKey:@"code"] integerValue];
+        if (code == 1) {
+            [blockSelf.navigationController popViewControllerAnimated:YES];
             blockSelf.progressHUD.mode = MBProgressHUDModeText;
-            blockSelf.progressHUD.labelText = [error localizedDescription];
+            blockSelf.progressHUD.labelText = [jsonDic objectForKey:@"data"];
             [blockSelf.progressHUD hide:YES afterDelay:3];
-        }];
-
-        
-    }
+        }else{
+            blockSelf.progressHUD.mode = MBProgressHUDModeText;
+            blockSelf.progressHUD.labelText = [jsonDic objectForKey:@"data"];
+            [blockSelf.progressHUD hide:YES afterDelay:3];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        blockSelf.progressHUD.mode = MBProgressHUDModeText;
+        blockSelf.progressHUD.labelText = [error localizedDescription];
+        [blockSelf.progressHUD hide:YES afterDelay:3];
+    }];
+    
+    
 }
 
 

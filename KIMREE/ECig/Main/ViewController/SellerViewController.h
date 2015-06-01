@@ -16,7 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *dealerImageView;
 @property (weak, nonatomic) IBOutlet UILabel *dealerNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *customerNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *customerNameLabel; // dealerEmail
 @property (weak, nonatomic) IBOutlet UILabel *dealerPhoneLabel;
 
 

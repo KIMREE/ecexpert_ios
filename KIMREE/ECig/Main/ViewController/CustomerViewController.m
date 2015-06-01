@@ -106,13 +106,14 @@
 
 - (void)showProductsTapAction{
     JRWebViewController *webVC=[[JRWebViewController alloc] init];
-    webVC.URL=[NSURL URLWithString:@"http://jmall.jd.com/shop/kimree/index.html"];
+    webVC.URL=[NSURL URLWithString:@"http://www.kimree.com.cn"];
     webVC.mode=WebBrowserModeModal;
     [self.navigationController pushViewController:webVC animated:YES];
 }
 
 - (void)nearbyStoreTapAction{
-    [self.navigationController pushViewController:[[NearbyViewController alloc] init] animated:YES];
+//    [self.navigationController pushViewController:[[NearbyViewController alloc] init] animated:YES];
+    [self.tabBarController setSelectedIndex:1];
 }
 
 - (void)recordTapAction{

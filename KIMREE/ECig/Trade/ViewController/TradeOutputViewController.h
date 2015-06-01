@@ -14,4 +14,6 @@
 // 用来判断查看交易记录的用户类型
 @property (assign, nonatomic) TradeRecordType tradeRecordType;
 
+@property (copy, nonatomic) NSDictionary *tradeInfoDic;
+
 @end

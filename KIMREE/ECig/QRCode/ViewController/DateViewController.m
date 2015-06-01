@@ -54,6 +54,15 @@
     _outDateFormatter.dateFormat = _formatter;
 }
 
+- (void)goback{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"放弃修改?" message:@"放弃修改数据?" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
+        if (buttonIndex == 1) {
+            [super goback];
+        }
+    }];
+}
+
 /**
  *  初始化日历参数
  */

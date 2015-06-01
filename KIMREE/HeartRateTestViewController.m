@@ -16,14 +16,28 @@
 
 @interface HeartRateTestViewController ()
 
+@property (assign, nonatomic) BOOL orginHiddenTabBar;
+
 @end
 
 @implementation HeartRateTestViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor=COLOR_WHITE_NEW;
+    self.view.backgroundColor = COLOR_WHITE_NEW;
     [self viewInit];
+    
+    self.orginHiddenTabBar = self.tabBarController.tabBar.hidden;
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = self.orginHiddenTabBar;
 }
 
 -(void)viewInit

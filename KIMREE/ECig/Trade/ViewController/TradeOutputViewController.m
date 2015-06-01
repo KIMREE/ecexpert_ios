@@ -10,6 +10,7 @@
 #import "MainProductViewController.h"
 #import "GiftProductViewController.h"
 #import "AFNetworking.h"
+#import "ProductModel.h"
 
 @interface TradeOutputViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -32,21 +33,85 @@
     self.view.backgroundColor = [UIColor clearColor];
     self.title = @"交易记录详情";
     
+    [self initData];
     [self initTableView];
     
     if(self.tradeRecordType == TradeRecordTypeGift){
-        self.manager = [AFHTTPRequestOperationManager manager];
-        [self.manager setRequestSerializer:[AFHTTPRequestSerializer serializer]];
-        [self.manager setResponseSerializer:[AFJSONResponseSerializer serializer]];
-        [self.manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil]];
-        
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(changeGiftRecord)];
     }
 }
 
+- (void)initData{
+    self.productArray = [NSMutableArray array];
+    self.giftArray = [NSMutableArray array];
+    self.customerArray = [NSMutableArray array];
+    self.dealerArray = [NSMutableArray array];
+    
+    self.manager = [AFHTTPRequestOperationManager manager];
+    [self.manager setRequestSerializer:[AFHTTPRequestSerializer serializer]];
+    [self.manager setResponseSerializer:[AFJSONResponseSerializer serializer]];
+    [self.manager.requestSerializer setTimeoutInterval:10];
+    [self.manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil]];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:[self.tradeInfoDic objectForKey:@"trade_no"] forKey:@"tradeno"];
+    self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+    [self.progressHUD show:YES];
+    __unsafe_unretained TradeOutputViewController *blockSelf = self;
+    [self.manager POST:API_TRADE_RECORD_DETAIL_URL parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *resultDic = (NSDictionary *)responseObject;
+        NSInteger code = [[resultDic objectForKey:@"code"] integerValue];
+        if (code == 1) {
+            NSDictionary *rootData = [resultDic objectForKey:@"data"];
+            
+            NSMutableDictionary *customer = [NSMutableDictionary dictionary];
+            [customer setObject:[rootData objectForKey:@"customer_id"] forKey:@"customer_id"];
+            [customer setObject:[rootData objectForKey:@"customer_nickname"] forKey:@"customer_nickname"];
+            [customer setObject:[rootData objectForKey:@"customer_vip"] forKey:@"customer_vip"];
+            [self.customerArray addObject:customer];
+            
+            NSMutableDictionary *dealer = [NSMutableDictionary dictionary];
+            [dealer setObject:[rootData objectForKey:@"dealer_id"] forKey:@"dealer_id"];
+            [dealer setObject:[rootData objectForKey:@"dealer_company"] forKey:@"dealer_company"];
+            [self.dealerArray addObject:dealer];
+            
+            NSArray *rootProducts = [rootData objectForKey:@"products"];
+            for (NSDictionary *product in rootProducts) {
+                ProductModel *model = [[ProductModel alloc] init];
+                model.scanCode = [product objectForKey:@"productcode"];
+                model.totalCount = [[product objectForKey:@"productnum"] integerValue];
+                model.productNameZH = [product objectForKey:@"productname"];
+                [self.productArray addObject:model];
+            }
+            
+            NSArray *rootGifts = [rootData objectForKey:@"gifts"];
+            for (NSDictionary *gift in rootGifts) {
+                ProductModel *model = [[ProductModel alloc] init];
+                model.scanCode = [gift objectForKey:@"giftcode"];
+                model.totalCount = [[gift objectForKey:@"giftnum"] integerValue];
+                model.productNameZH = [gift objectForKey:@"giftname"];
+                [self.giftArray addObject:model];
+            }
+            
+            [blockSelf.tableView reloadData];
+            [blockSelf.progressHUD hide:YES];
+        }else{
+            blockSelf.progressHUD.mode = MBProgressHUDModeText;
+            blockSelf.progressHUD.labelText = @"获取数据失败!";
+            blockSelf.progressHUD.detailsLabelText = [resultDic objectForKey:@"data"];
+            [blockSelf.progressHUD hide:YES afterDelay:3];
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        blockSelf.progressHUD.mode = MBProgressHUDModeText;
+        blockSelf.progressHUD.labelText = @"获取数据失败!";
+        blockSelf.progressHUD.detailsLabelText = [error localizedDescription];
+        [blockSelf.progressHUD hide:YES afterDelay:3];
+    }];
+}
+
 - (void)changeGiftRecord{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"派发赠品" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    
     [alert showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
         NSLog(@"%lu", buttonIndex);
     }];
@@ -54,9 +119,6 @@
 }
 
 - (void)initTableView{
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"yyyy-MMMM-dd hh:mm";
-    
     CGFloat _x,_y,_w,_h;
     _w = KM_SCREEN_WIDTH,
     _x = 0;
@@ -76,7 +138,7 @@
     label.frame = CGRectMake(headerFrame.origin.x, 10, headerFrame.size.width, 40);
     //    label.textColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentCenter;
-    label.text = [NSString stringWithFormat:@"订单完成时间:%@",[dateFormatter stringFromDate:[NSDate date]]];
+    label.text = [NSString stringWithFormat:@"订单完成时间:%@",[self.tradeInfoDic objectForKey:@"trade_time"]];
     [headerView addSubview:label];
     [self.view addSubview:headerView];
     
@@ -118,13 +180,23 @@
     //    cell.detailTextLabel.textColor = RGB(153, 138, 141);
     
     if (indexPath.section == 0) {
-        if (self.customerArray.count > 0) {
-            cell.textLabel.text = [self.customerArray firstObject];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        if (self.customerArray.count > 0 && self.dealerArray.count > 0) {
+            if (self.tradeRecordType == TradeRecordTypeCustomer) {
+                // 普通客户查看记录，显示卖家信息
+                NSDictionary *dealer = [self.dealerArray firstObject];
+                cell.textLabel.text = [dealer objectForKey:@"dealer_company"];
+                
+            }else if (self.tradeRecordType == TradeRecordTypeDealer){
+                // 销售商查看交易记录，显示买家信息
+                NSDictionary *customer = [self.customerArray firstObject];
+                cell.textLabel.text = [customer objectForKey:@"customer_nickname"];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"会员卡号:%@", [customer objectForKey:@"customer_vip"]];
+                
+            }
         }else{
-            cell.accessoryType = UITableViewCellAccessoryNone;
             cell.textLabel.text = @"没有用户信息";
         }
-        
     }else if (indexPath.section == 1){
         if (self.productArray.count > 0) {
             ProductModel *product = [self.productArray objectAtIndex:indexPath.row];
@@ -139,7 +211,7 @@
         if (self.giftArray.count > 0) {
             ProductModel *product = [self.giftArray objectAtIndex:indexPath.row];
             cell.textLabel.text = product.productNameZH;
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"总数量:%zi    已派发:%zi",product.totalCount, product.dispatchCount];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"数量:%zi",product.totalCount];
         }else{
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.textLabel.text = @"没有赠品数据";
@@ -177,27 +249,10 @@
             NSLog(@"买家信息");
         }
     }else if (section == 1 && self.productArray.count > 0){
-        
-        MainProductViewController *mainProductVC = [[MainProductViewController alloc] init];
-        mainProductVC.supTableView = self.tableView;
-        mainProductVC.isEdit = NO;
-        mainProductVC.productArray = self.productArray;
-        mainProductVC.mainProduct = self.productArray[row];
-        
-        [self.navigationController pushViewController:mainProductVC animated:YES];
+        [self showProductDetail:indexPath];
         
     }else if (section == 2 && self.giftArray.count > 0){
-        
-        GiftProductViewController *giftVC = [[GiftProductViewController alloc] init];
-        giftVC.supTableView = self.tableView;
-        giftVC.giftArray = self.giftArray;
-        giftVC.giftProduct = self.giftArray[row];
-        giftVC.pageEditType = GiftPageEditTypeNone;// 仅仅查看交易记录
-        if (self.tradeRecordType == TradeRecordTypeGift) {
-            giftVC.pageEditType = GiftPageEditTypeDispatch; // 赠品看路查询中，可以进行派发赠品操作
-        }
-        
-        [self.navigationController pushViewController:giftVC animated:YES];
+        [self showGiftDetail:indexPath];
     }
 }
 
@@ -215,13 +270,13 @@
     if (section == 0) {
         switch (self.tradeRecordType) {
             case TradeRecordTypeCustomer:
-                title.text = @"卖家";
+                title.text = @"购买地点";
                 break;
             case TradeRecordTypeDealer:
-                title.text = @"买家";
+                title.text = @"用户";
                 break;
             case TradeRecordTypeGift:
-                title.text = @"买家";
+                title.text = @"用户";
                 break;
             default:
                 break;
@@ -255,6 +310,100 @@
 //    return 20;
 //}
 
+
+#pragma mark - 点击cell执行的操作
+- (void) showProductDetail:(NSIndexPath *)indexPath{
+    ProductModel *product = [self.productArray objectAtIndex:indexPath.row];
+    MainProductViewController *mainProductVC = [[MainProductViewController alloc] init];
+    mainProductVC.supTableView = self.tableView;
+    mainProductVC.isEdit = NO;
+    mainProductVC.productArray = self.productArray;
+    
+    if (product.barCodeImageUrl.length > 0) {
+        mainProductVC.mainProduct = product;
+        [self.navigationController pushViewController:mainProductVC animated:YES];
+        
+    }else{
+        
+        self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+        self.progressHUD.labelText = @"Loading...";
+        [self.progressHUD show:YES];
+        __unsafe_unretained TradeOutputViewController *blockSelf = self;
+        [self.manager POST:[NSString stringWithFormat:API_BAR_CODE_URL, product.scanCode] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSDictionary *rootDic = (NSDictionary *)responseObject;
+            NSInteger code = [[rootDic objectForKey:@"code"] integerValue];
+            if (code == 1) {
+                ProductModel *model = [ProductModel objectWithKeyValues:[rootDic objectForKey:@"data"]];
+                model.totalCount = product.totalCount;
+                model.scanCode = product.scanCode;
+                
+                NSInteger index = [blockSelf.productArray indexOfObject:product];
+                [blockSelf.productArray removeObjectAtIndex:index];
+                [blockSelf.productArray insertObject:model atIndex:index];
+                
+                mainProductVC.mainProduct = model;
+                [blockSelf.navigationController pushViewController:mainProductVC animated:YES];
+                [blockSelf.progressHUD hide:YES];
+            }else{
+                blockSelf.progressHUD.mode = MBProgressHUDModeText;
+                blockSelf.progressHUD.labelText = [NSString stringWithFormat:@"%@",[rootDic objectForKey:@"data"]];
+                [blockSelf.progressHUD hide:YES afterDelay:3];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            blockSelf.progressHUD.mode = MBProgressHUDModeText;
+            blockSelf.progressHUD.labelText = [error localizedDescription];
+            [blockSelf.progressHUD hide:YES afterDelay:3];
+        }];
+    }
+}
+
+- (void) showGiftDetail:(NSIndexPath *)indexPath{
+    ProductModel *gift = [self.giftArray objectAtIndex:indexPath.row];
+    GiftProductViewController *giftVC = [[GiftProductViewController alloc] init];
+    giftVC.supTableView = self.tableView;
+    giftVC.giftArray = self.giftArray;
+    giftVC.pageEditType = GiftPageEditTypeNone;// 仅仅查看交易记录
+    if (self.tradeRecordType == TradeRecordTypeGift) {
+        giftVC.pageEditType = GiftPageEditTypeDispatch; // 赠品看路查询中，可以进行派发赠品操作
+    }
+    
+    if (gift.barCodeImageUrl.length > 0) {
+        giftVC.giftProduct = gift;
+        [self.navigationController pushViewController:giftVC animated:YES];
+        
+    }else{
+        
+        self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+        self.progressHUD.labelText = @"Loading...";
+        [self.progressHUD show:YES];
+        __unsafe_unretained TradeOutputViewController *blockSelf = self;
+        [self.manager POST:[NSString stringWithFormat:API_BAR_CODE_URL, gift.scanCode] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSDictionary *rootDic = (NSDictionary *)responseObject;
+            NSInteger code = [[rootDic objectForKey:@"code"] integerValue];
+            if (code == 1) {
+                ProductModel *model = [ProductModel objectWithKeyValues:[rootDic objectForKey:@"data"]];
+                model.totalCount = gift.totalCount;
+                model.scanCode = gift.scanCode;
+                
+                NSInteger index = [blockSelf.giftArray indexOfObject:gift];
+                [blockSelf.giftArray removeObjectAtIndex:index];
+                [blockSelf.giftArray insertObject:model atIndex:index];
+                
+                giftVC.giftProduct = model;
+                [blockSelf.navigationController pushViewController:giftVC animated:YES];
+                [blockSelf.progressHUD hide:YES];
+            }else{
+                blockSelf.progressHUD.mode = MBProgressHUDModeText;
+                blockSelf.progressHUD.labelText = [NSString stringWithFormat:@"%@",[rootDic objectForKey:@"data"]];
+                [blockSelf.progressHUD hide:YES afterDelay:3];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            blockSelf.progressHUD.mode = MBProgressHUDModeText;
+            blockSelf.progressHUD.labelText = [error localizedDescription];
+            [blockSelf.progressHUD hide:YES afterDelay:3];
+        }];
+    }
+}
 
 /*
  #pragma mark - Navigation

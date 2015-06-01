@@ -45,12 +45,33 @@
 }
 
 - (void)commitChanges{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"保存数据" message:@"确定保存修改后的数据？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alert show];
+    self.giftProduct.totalCount = [self.totalField.text integerValue];
+    self.giftProduct.dispatchCount = [self.dispatchField.text integerValue];
+    self.giftProduct.effectiveDate = [self.dateFormatter dateFromString:self.effectiveDateBtn.titleLabel.text];
+    self.giftProduct.expirationDate = [self.dateFormatter dateFromString:self.expirationDateBtn.titleLabel.text];
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    if (self.giftProduct.totalCount == 0) {
+        [self.giftArray removeObject:self.giftProduct];
+    }
+    [_supTableView reloadData];
 }
 
 - (void)removeKeyboard{
     [self.view endEditing:YES];
+}
+
+- (void)goback{
+    if (self.pageEditType == GiftPageEditTypeNone) {
+        [super goback];
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"放弃修改?" message:@"放弃修改数据?" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        [alert showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
+            if (buttonIndex == 0) {
+                [super goback];
+            }
+        }];
+    }
 }
 
 - (void)initTableView{
@@ -89,7 +110,8 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    // 移除: 派发数量 生效日期 失效日期
+    return 10 - 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -160,7 +182,8 @@
             _totalField.enabled = NO;
         }
     
-    }else if (row == 3){
+    }
+    /*else if (row == 3){
         if (self.pageEditType == GiftPageEditTypeDispatch) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"本次分派赠品数量：%d", 0];
         }
@@ -244,19 +267,20 @@
         }
         
         [contentRightView addSubview:_expirationDateBtn];
-    }else if (row == 6){
+    }*/
+    else if (row == 3){
         cell.textLabel.text = @"品牌名称：";
         label.text = self.giftProduct.brandName;
         
-    }else if (row == 7){
+    }else if (row == 4){
         cell.textLabel.text = @"规格型号：";
         label.text = self.giftProduct.specifications;
         
-    }else if (row == 8){
+    }else if (row == 5){
         cell.textLabel.text = @"原产国：";
         label.text = self.giftProduct.originCountry;
         
-    }else if (row == 9){
+    }else if (row == 6){
         cell.textLabel.text = @"装配国：";
         label.text = self.giftProduct.assembleCountry;
         
@@ -399,22 +423,6 @@
     }
     
     return YES;
-}
-
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 1) {
-        self.giftProduct.totalCount = [self.totalField.text integerValue];
-        self.giftProduct.dispatchCount = [self.dispatchField.text integerValue];
-        self.giftProduct.effectiveDate = [self.dateFormatter dateFromString:self.effectiveDateBtn.titleLabel.text];
-        self.giftProduct.expirationDate = [self.dateFormatter dateFromString:self.expirationDateBtn.titleLabel.text];
-        
-        [self.navigationController popViewControllerAnimated:YES];
-        if (self.giftProduct.totalCount == 0) {
-            [self.giftArray removeObject:self.giftProduct];
-        }
-        [_supTableView reloadData];
-    }
 }
 
 /*

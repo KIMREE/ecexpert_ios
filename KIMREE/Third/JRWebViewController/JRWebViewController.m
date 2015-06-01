@@ -21,7 +21,7 @@
 #define HZ_App_Frame_Width         [[UIScreen mainScreen] applicationFrame].size.width
 
 #define kNavBarHeight                   44
-#define kTooBarHeight                   44
+#define kTooBarHeight                   49
 #define kNavigationAndStatusBarHeight   64
 CGFloat const HZProgressBarHeight = 2.5;
 NSInteger const HZProgresstagId = 222122323;
@@ -711,6 +711,8 @@ NSInteger const HZProgresstagId = 222122323;
 {
     return YES;
 }
+
+
 @end
 
 

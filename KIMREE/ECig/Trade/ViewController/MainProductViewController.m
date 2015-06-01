@@ -35,8 +35,29 @@
 
 - (void)commitChanges{
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"保存数据" message:@"确定保存修改后的数据？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alert show];
+    self.mainProduct.totalCount = [self.countField.text integerValue];
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
+    if (self.mainProduct.totalCount == 0) {
+        [self.productArray removeObject:self.mainProduct];
+    }
+    [_supTableView reloadData];
+    
+}
+
+- (void)goback{
+    if (self.isEdit) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"放弃修改?" message:@"放弃修改数据?" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        [alert showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
+            if (buttonIndex == 0) {
+                [super goback];
+            }
+        }];
+    }else{
+        [super goback];
+    }
+    
 }
 
 - (void)removeKeyboard{
@@ -217,19 +238,6 @@
 
 #pragma mark - UITableViewDelegate
 
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 1) {
-        self.mainProduct.totalCount = [self.countField.text integerValue];
-        
-        [self.navigationController popViewControllerAnimated:YES];
-        
-        if (self.mainProduct.totalCount == 0) {
-            [self.productArray removeObject:self.mainProduct];
-        }
-        [_supTableView reloadData];
-    }
-}
 
 /*
 #pragma mark - Navigation

@@ -54,7 +54,6 @@
     self.customerNameLabel.text = [[[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory] objectForKey:@"dealer_email"];
     self.dealerPhoneLabel.text = [[[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory] objectForKey:@"dealer_telephone"];
     
-    NSLog(@"%@",[[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory]);
     if ([[[[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory] objectForKey:@"dealer_headimage"] length] <= 0) {
         [self.dealerImageView setImage:[UIImage imageNamed:@"accountHeader"]];
     }else{

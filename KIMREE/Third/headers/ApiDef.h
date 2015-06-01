@@ -16,6 +16,8 @@
 #define API_GETUSERINFO_URL_NEW @"http://www.kimree.com.cn/app/?action=getuserinfo" //获取个人信息
 #define API_CHECKVIP_URL @"http://www.kimree.com.cn/app/?action=checkvip"  // 根据用户id和会员卡号确定用户合法性
 #define API_TRADE_INPUT_URL @"http://www.kimree.com.cn/app/?action=typetrade"
+#define API_TRADE_RECORD_SELECT_URL @"http://www.kimree.com.cn/app/?action=selecttrade"
+#define API_TRADE_RECORD_DETAIL_URL @"http://www.kimree.com.cn/app/?action=tradeinfo"
 
 
 // 服务器地址

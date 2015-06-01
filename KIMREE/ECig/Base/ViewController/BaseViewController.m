@@ -86,6 +86,13 @@
     }else{
         [self.view addSubview:self.progressHUD];
     }
+    
+    UITapGestureRecognizer *click = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideProgressHUD)];
+    [self.progressHUD addGestureRecognizer:click];
+}
+
+- (void)hideProgressHUD{
+    [self.progressHUD hide:YES];
 }
 
 /*
