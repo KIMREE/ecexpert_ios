@@ -10,6 +10,8 @@
 #import "LoginViewController.h"
 #import "GetDealer.h"
 #import "HeartRateTestViewController.h"
+#import "AFNetworkingFactory.h"
+#import "AppDelegate.h"
 
 @interface SellerSettingViewController ()<UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate, UITextViewDelegate>{
     UIView *feedbackView,*aboutView;
@@ -55,34 +57,51 @@
         [self.navigationController pushViewController:loginVC animated:YES];
         
     }else{
-        
-        
         UIAlertView *logoutV=[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Logout", @"") message:NSLocalizedString(@"Are sure logout?", @"")  delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:NSLocalizedString(@"Sure", @""), nil];
         __unsafe_unretained SellerSettingViewController *blockSelf = self;
         [logoutV showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
             if (buttonIndex == 1) {
-                blockSelf.navigationItem.rightBarButtonItem.title=NSLocalizedString(@"LogIn", @"");
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:API_LOGIN_SID];
-                [[LocalStroge sharedInstance] deleteFileforKey:F_USER_INFORMATION filePath:NSDocumentDirectory];
-                //加入通知,注销后主界面要进行刷新
-                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_USER_LOGOUT object:nil];
-                //调用主视图方法注销
-                [blockSelf.tableView reloadData];
                 
-                // 获取tabviewcontroller
-                MainViewController *mainVC = (MainViewController *)self.tabBarController;
-                NSMutableArray *vcArray = [NSMutableArray arrayWithArray:mainVC.viewControllers];
-                // 移除当前controller
-                NSInteger index = [vcArray indexOfObject:self.navigationController];
-                [vcArray removeObject:self.navigationController];
-                // 加载需要显示的viewcontroller
-                LoginViewController *loginVC = [[LoginViewController alloc] init];
-                UINavigationController *loginNav = [mainVC UINavigationControllerWithRootVC:loginVC image:@"Me" title:@"Me"];
+                // 通知服务器登出
+                AFHTTPRequestOperationManager *manager = [AFNetworkingFactory networkingManager];
+                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                NSDictionary *loginUserInfo = [appDelegate loginUser];
+                NSMutableDictionary *params = [NSMutableDictionary dictionary];
+                [params setObject:[loginUserInfo objectForKey:@"usertype"] forKey:@"usertype"];
                 
-                // 重新拼装 tabviewcontroller， 并显示新添加进去的 viewcontroller
-                [vcArray insertObject:loginNav atIndex:index];
-                mainVC.viewControllers = vcArray;
-                [mainVC setSelectedViewController:loginNav];
+                __unsafe_unretained AppDelegate *blockAppDelegate = appDelegate;
+                [manager POST:API_LOGOUT_URL_NEW parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    NSDictionary *rootDic = (NSDictionary *)responseObject;
+                    NSInteger code = [[rootDic objectForKey:@"code"] integerValue];
+                    if (code == 1) {
+                        blockAppDelegate.loginUser = nil;
+                        blockSelf.navigationItem.rightBarButtonItem.title=NSLocalizedString(@"LogIn", @"");
+                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:API_LOGIN_SID];
+                        [[LocalStroge sharedInstance] deleteFileforKey:F_USER_INFORMATION filePath:NSDocumentDirectory];
+                        //加入通知,注销后主界面要进行刷新
+                        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_USER_LOGOUT object:nil];
+                        //调用主视图方法注销
+                        [blockSelf.tableView reloadData];
+                        
+                        // 获取tabviewcontroller
+                        MainViewController *mainVC = (MainViewController *)self.tabBarController;
+                        NSMutableArray *vcArray = [NSMutableArray arrayWithArray:mainVC.viewControllers];
+                        // 移除当前controller
+                        NSInteger index = [vcArray indexOfObject:self.navigationController];
+                        [vcArray removeObject:self.navigationController];
+                        // 加载需要显示的viewcontroller
+                        LoginViewController *loginVC = [[LoginViewController alloc] init];
+                        UINavigationController *loginNav = [mainVC UINavigationControllerWithRootVC:loginVC image:@"Me" title:@"Me"];
+                        
+                        // 重新拼装 tabviewcontroller， 并显示新添加进去的 viewcontroller
+                        [vcArray insertObject:loginNav atIndex:index];
+                        mainVC.viewControllers = vcArray;
+                        [mainVC setSelectedViewController:loginNav];
+                    }
+                    
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    
+                }];
             }
         }];
     }

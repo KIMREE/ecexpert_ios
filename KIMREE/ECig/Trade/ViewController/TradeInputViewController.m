@@ -8,7 +8,7 @@
 
 #import <objc/runtime.h>
 #import "TradeInputViewController.h"
-#import "AFNetworking.h"
+#import "AFNetworkingFactory.h"
 #import "AppDelegate.h"
 
 #import "ScanViewController.h"
@@ -53,11 +53,7 @@
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateFormat = self.dateString;
     
-    self.manager = [AFHTTPRequestOperationManager manager];
-    [_manager setRequestSerializer:[AFHTTPRequestSerializer serializer]];
-    [_manager setResponseSerializer:[AFJSONResponseSerializer serializer]];
-    [self.manager.requestSerializer setTimeoutInterval:10];
-    [_manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil]]; // 默认的acceptableContentTypes缺少 text/html, 可以到 AFJSONResponseSerializer 代码223行查看
+    self.manager = [AFNetworkingFactory networkingManager];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

@@ -15,6 +15,8 @@
 #import "JRWebViewController.h"
 #import "WXApi.h"
 #import "GetDealer.h"
+#import "AFNetworkingFactory.h"
+#import "AppDelegate.h"
 
 @interface MemberSettingViewController ()<UITextViewDelegate,UITextFieldDelegate,UIAlertViewDelegate>
 
@@ -45,18 +47,18 @@
     
     self.title=NSLocalizedString(@"Account", @"");
     _memberTableView=[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
-
+    
     
     _memberTableView.delegate=self;
     _memberTableView.dataSource=self;
     [self.view addSubview:_memberTableView];
     
     
-//    [self.navigationItem setHidesBackButton:YES];
+    //    [self.navigationItem setHidesBackButton:YES];
     
     //隐藏多余分隔线
     [self setExtraCellLineHidden:_memberTableView];
-
+    
     
 }
 
@@ -82,7 +84,7 @@
         _userName =[NSString stringWithFormat:NSLocalizedString(@"Name:%@", @""),[[[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory] objectForKey:@"customer_name"]];
         _userNickname =[NSString stringWithFormat:NSLocalizedString(@"Nickname:%@", @""),[[[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory] objectForKey:@"customer_nickname"]];
         _userLevel=[NSString stringWithFormat:NSLocalizedString(@"Level:%@", @""),[[[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory] objectForKey:@"customer_degree"]];
-
+        
     }else
     {
         _headView.image=[UIImage imageNamed:@"accountHeader"];
@@ -102,7 +104,7 @@
         self.navigationController.navigationBar.translucent = YES;
     }
     //临时设置左按键为扫描二维码
-//    self.navigationItem.leftBarButtonItem=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode"] style:UIBarButtonItemStylePlain target:self action:@selector(gotoQRCode)];
+    //    self.navigationItem.leftBarButtonItem=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode"] style:UIBarButtonItemStylePlain target:self action:@selector(gotoQRCode)];
     
     
     
@@ -111,7 +113,7 @@
     }else{
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"LogOut", @"") style:UIBarButtonItemStylePlain target:self action:@selector(logInOrOut)];
         //获取数据
- 
+        
     }
     [self getUerData];
     self.navigationController.navigationBarHidden=NO;
@@ -155,28 +157,28 @@
             [alert show];
         }
         
-//用微信，无权限
-//        if ([WXApi isWXAppInstalled]) {
-//            NSString *str = [NSString stringWithFormat:@"weixin://qr/%@",result];
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-//        }else
-//        {
-//            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您没有安装微信，现在去安装" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-//            [alertView show];
-//            
-//        }
+        //用微信，无权限
+        //        if ([WXApi isWXAppInstalled]) {
+        //            NSString *str = [NSString stringWithFormat:@"weixin://qr/%@",result];
+        //            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        //        }else
+        //        {
+        //            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您没有安装微信，现在去安装" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        //            [alertView show];
+        //
+        //        }
         
-
+        
         
         
     }];
-
-    
-
     
     
-   
-
+    
+    
+    
+    
+    
 }
 
 - (void)readerDidCancel:(QRCodeReaderViewController *)reader
@@ -216,15 +218,15 @@
 
 -(void) logInOrOut
 {
- 
+    
     if ([[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory]==nil) {
-       
+        
         LoginViewController *loginVC=[LoginViewController alloc];
         [self.navigationController pushViewController:loginVC animated:YES];
-   
+        
     }else{
         
-    
+        
         UIAlertView *logoutV=[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Logout", @"") message:NSLocalizedString(@"Are sure logout?", @"")  delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:NSLocalizedString(@"Sure", @""), nil];
         logoutV.tag=101;
         [logoutV show];
@@ -239,28 +241,49 @@
     
     if (alertView.tag==101) {
         if (buttonIndex==1) {
-            self.navigationItem.rightBarButtonItem.title=NSLocalizedString(@"LogIn", @"");
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:API_LOGIN_SID];
-            [[LocalStroge sharedInstance] deleteFileforKey:F_USER_INFORMATION filePath:NSDocumentDirectory];
-            //加入通知,注销后主界面要进行刷新
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_USER_LOGOUT object:nil];
-            //调用主视图方法注销
-            [_memberTableView reloadData];
             
-            // 获取tabviewcontroller
-            MainViewController *mainVC = (MainViewController *)self.tabBarController;
-            NSMutableArray *vcArray = [NSMutableArray arrayWithArray:mainVC.viewControllers];
-            // 移除当前controller
-            NSInteger index = [vcArray indexOfObject:self.navigationController];
-            [vcArray removeObject:self.navigationController];
-            // 加载需要显示的viewcontroller
-            LoginViewController *loginVC = [[LoginViewController alloc] init];
-            UINavigationController *loginNav = [mainVC UINavigationControllerWithRootVC:loginVC image:@"Me" title:@"Me"];
+            AFHTTPRequestOperationManager *manager = [AFNetworkingFactory networkingManager];
+            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            NSDictionary *loginUserInfo = [appDelegate loginUser];
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setObject:[loginUserInfo objectForKey:@"usertype"] forKey:@"usertype"];
             
-            // 重新拼装 tabviewcontroller， 并显示新添加进去的 viewcontroller
-            [vcArray insertObject:loginNav atIndex:index];
-            mainVC.viewControllers = vcArray;
-            [mainVC setSelectedViewController:loginNav];
+            __unsafe_unretained AppDelegate *blockAppDelegate = appDelegate;
+            __unsafe_unretained MemberSettingViewController *blockSelf = self;
+            [manager POST:API_LOGOUT_URL_NEW parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSDictionary *rootDic = (NSDictionary *)responseObject;
+                NSInteger code = [[rootDic objectForKey:@"code"] integerValue];
+                if (code == 1) {
+                    blockAppDelegate.loginUser = nil;
+                    blockSelf.navigationItem.rightBarButtonItem.title=NSLocalizedString(@"LogIn", @"");
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:API_LOGIN_SID];
+                    [[LocalStroge sharedInstance] deleteFileforKey:F_USER_INFORMATION filePath:NSDocumentDirectory];
+                    //加入通知,注销后主界面要进行刷新
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_USER_LOGOUT object:nil];
+                    //调用主视图方法注销
+                    [_memberTableView reloadData];
+                    
+                    // 获取tabviewcontroller
+                    MainViewController *mainVC = (MainViewController *)self.tabBarController;
+                    NSMutableArray *vcArray = [NSMutableArray arrayWithArray:mainVC.viewControllers];
+                    // 移除当前controller
+                    NSInteger index = [vcArray indexOfObject:self.navigationController];
+                    [vcArray removeObject:self.navigationController];
+                    // 加载需要显示的viewcontroller
+                    LoginViewController *loginVC = [[LoginViewController alloc] init];
+                    UINavigationController *loginNav = [mainVC UINavigationControllerWithRootVC:loginVC image:@"Me" title:@"Me"];
+                    
+                    // 重新拼装 tabviewcontroller， 并显示新添加进去的 viewcontroller
+                    [vcArray insertObject:loginNav atIndex:index];
+                    mainVC.viewControllers = vcArray;
+                    [mainVC setSelectedViewController:loginNav];
+                }
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+            }];
+            
+            
         }
     }
     if (alertView.tag==102) {
@@ -288,14 +311,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-
+    
     return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-   //抽奖在暂时去除
-   // int num[3]={1,5,4};
+    //抽奖在暂时去除
+    // int num[3]={1,5,4};
     int num[4]={1,1,3,2};
     return num[section];
 }
@@ -344,7 +367,7 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.textColor=COLOR_DARK_GRAY;
     if (indexPath.section==0) {
-     
+        
         cell.selectionStyle=UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
         //获取个人信息视图
@@ -356,7 +379,7 @@
         
         cell.textLabel.text=NSLocalizedString(@"Heart rate test", nil);
         cell.imageView.image = [UIImage imageNamed:@"heartRateTest"];
-    
+        
     }else if (indexPath.section==2) {
         if (indexPath.row==0) {
             
@@ -377,7 +400,7 @@
         }
         
     }else{
-    
+        
         if (indexPath.row==0) {
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
@@ -389,17 +412,17 @@
             
             cell.textLabel.text=NSLocalizedString(@"Comment", nil);
             cell.imageView.image = [UIImage imageNamed:@"Comment"];
-        
+            
         }else if(indexPath.row==2){
             
             
             cell.textLabel.text=NSLocalizedString(@"Wheel of Fortune", nil);
             cell.imageView.image = [UIImage imageNamed:@"Luck"];
         }
-    
+        
     }
     
-	return cell;
+    return cell;
 }
 
 
@@ -419,7 +442,7 @@
 -(void)personalInformation:(UITableViewCell *)cell
 {
     [self headViewInit];
- 
+    
     if ([[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory]!=nil) {
         UILabel *userNameLabel=[[UILabel alloc] init];
         UILabel *userNicknameLabel=[[UILabel alloc] init];
@@ -440,14 +463,14 @@
         }
         
     }else{
-
+        
         UILabel *hintLabel=[[UILabel alloc] init];
-       [self labelInit:hintLabel name:NSLocalizedString(@"Not logged in", nil) size:CGRectMake(140, 65, 300, 30) numerOfLines:1 fontSize:14];
+        [self labelInit:hintLabel name:NSLocalizedString(@"Not logged in", nil) size:CGRectMake(140, 65, 300, 30) numerOfLines:1 fontSize:14];
         [cell addSubview:hintLabel];
         
-    
+        
     }
-
+    
 }
 
 
@@ -466,7 +489,7 @@
 }
 
 -(void) buttonInit:(UIButton*)button action:(SEL)action size:(CGRect)frame name:(NSString*)name{
-   
+    
     [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     button.backgroundColor=[UIColor clearColor];
     button.frame = frame;
@@ -480,19 +503,19 @@
     
     self.hidesBottomBarWhenPushed=YES;
     
-   if (indexPath.section==0)  //section 0
+    if (indexPath.section==0)  //section 0
     {
         if ([[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory]!=nil) {
             AccountViewController *accountVC=[[AccountViewController alloc] init];
             [self.navigationController pushViewController:accountVC animated:YES];
         }else {
-
+            
             [self logInOrOut];
-
+            
         }
-
+        
     }else if(indexPath.section==1){
-    
+        
         HeartRateTestViewController *heartRateVC=[[HeartRateTestViewController alloc] init];
         [self.navigationController pushViewController:heartRateVC animated:YES];
     }else if(indexPath.section==2){
@@ -513,8 +536,8 @@
                 
             }];
         }
-    
-    
+        
+        
     }else
     {
         if (indexPath.row==1) {
@@ -526,19 +549,19 @@
         
     }
     
-
+    
     
 }
 
 
 
 
-#pragma mark  
+#pragma mark
 #pragma mark  enter subview
 
 -(void)clearCache
 {
-
+    
     dispatch_async(
                    dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
                    , ^{
@@ -556,7 +579,7 @@
                        [[[GetDealer shareInstance:nil] localArr] removeAllObjects];
                        
                        [self performSelectorOnMainThread:@selector(clearCacheSuccess) withObject:nil waitUntilDone:YES];});
-
+    
 }
 
 
@@ -604,12 +627,12 @@
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=COLOR_WHITE_NEW;
     [aboutView addSubview:titleLabel];
-
-//    UILabel *titleTwo=[[UILabel alloc] init];
-//    [self labelInit:titleTwo name:@"cigarette" size:CGRectMake(10, 70, 300, 20) numerOfLines:0 fontSize:14];
-//    titleTwo.textColor=COLOR_WHITE_NEW;
-//    titleTwo.textAlignment=NSTextAlignmentCenter;
-//    [aboutView addSubview:titleTwo];
+    
+    //    UILabel *titleTwo=[[UILabel alloc] init];
+    //    [self labelInit:titleTwo name:@"cigarette" size:CGRectMake(10, 70, 300, 20) numerOfLines:0 fontSize:14];
+    //    titleTwo.textColor=COLOR_WHITE_NEW;
+    //    titleTwo.textAlignment=NSTextAlignmentCenter;
+    //    [aboutView addSubview:titleTwo];
     
     UILabel *aboutContent=[[UILabel alloc] init];
     [self labelInit:aboutContent name:@"       专注电子烟行业，是全球最大最全的电子烟门户APP。\n       为您提供电子烟行业最权威的新闻、品牌、政策、展会等最新资讯。" size:CGRectMake(10, 90, 300, 150) numerOfLines:0 fontSize:15];
@@ -658,7 +681,7 @@
     _information.delegate=self;
     [feedbackVC.view addSubview:_information];
     
-
+    
     
     UIButton *submit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self buttonInit:submit action:@selector(sendFeedback) size:CGRectMake(10.0, 260, 300.0, 40.0) name:NSLocalizedString(@"Submit", @"")];
@@ -741,7 +764,7 @@
     [_request setShouldAttemptPersistentConnection:NO];
     [_request setTimeOutSeconds:10];
     [_request setPostValue:_information.text forKey:@"question_content"];
-   // [MMProgressHUD showWithTitle:nil status:NSLocalizedString(@"submit...", "")];
+    // [MMProgressHUD showWithTitle:nil status:NSLocalizedString(@"submit...", "")];
     [_request startAsynchronous];
 }
 
@@ -765,7 +788,7 @@
     }
     else
     {
-       // [MMProgressHUD dismissWithError:[rootDic objectForKey:@"data"]];
+        // [MMProgressHUD dismissWithError:[rootDic objectForKey:@"data"]];
         [JDStatusBarNotification showWithStatus:[rootDic objectForKey:@"data"] dismissAfter:1.0f];
         
         [JDStatusBarNotification showWithStatus:NSLocalizedString(@"Failed to connect link to server!", "") dismissAfter:1.0f];

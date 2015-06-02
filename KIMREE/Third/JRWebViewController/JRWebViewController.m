@@ -68,7 +68,6 @@ NSInteger const HZProgresstagId = 222122323;
 
 @implementation JRWebViewController
 
-
 //不隐藏状态栏，貌似无效
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -100,7 +99,7 @@ NSInteger const HZProgresstagId = 222122323;
 #pragma mark - View controller lifecycle
 - (void)dealloc
 {
-    
+    NSLog(@"JRWebViewController dealloc");
 }
 - (UIViewController *)getCurrentRootViewController {
     
@@ -211,8 +210,19 @@ NSInteger const HZProgresstagId = 222122323;
     //增加二维码扫描按钮
     //    self.navigationItem.leftBarButtonItem=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"qrcode"] style:UIBarButtonItemStylePlain target:self action:@selector(gotoQRCode)];
     
+    
+    if ([self.navigationController.viewControllers objectAtIndex:0] != self) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"goback"] style:UIBarButtonItemStylePlain target:self action:@selector(goback)];
+    }
+    
 }
 
+- (void)goback{
+    // 退出界面前，让tabBar显示出来，并且异常自定义的toolBar
+    [self showTabBar:self.tabBarController];
+    _toolBar.hidden=YES;
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 -(void)gotoQRCode
 {

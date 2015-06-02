@@ -8,7 +8,7 @@
 
 #import "TradeRecordViewController.h"
 #import "TradeOutputViewController.h"
-#import "AFNetworking.h"
+#import "AFNetworkingFactory.h"
 #import "LoginViewController.h"
 #import "AppDelegate.h"
 
@@ -130,11 +130,7 @@
         self.sectionCellDic = [NSMutableDictionary dictionary];
     }
     
-    self.manager = [AFHTTPRequestOperationManager manager];
-    [self.manager setRequestSerializer:[AFHTTPRequestSerializer serializer]];
-    [self.manager setResponseSerializer:[AFJSONResponseSerializer serializer]];
-    [self.manager.requestSerializer setTimeoutInterval:10];
-    [self.manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil]];
+    self.manager = [AFNetworkingFactory networkingManager];
     
     self.pageNo = 1;
     self.pageSize = 10;

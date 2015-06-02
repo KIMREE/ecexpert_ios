@@ -2,7 +2,7 @@
 //  UIAlertView+Block.m
 //  ECExpert
 //
-//  Created by JIRUI on 15/5/27.
+//  Created by Fran on 15/5/27.
 //  Copyright (c) 2015年 JIRUI. All rights reserved.
 //
 

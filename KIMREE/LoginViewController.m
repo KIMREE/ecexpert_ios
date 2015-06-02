@@ -14,6 +14,7 @@
 
 #import "CustomerViewController.h"
 #import "SellerViewController.h"
+#import "AppDelegate.h"
 
 
 @interface LoginViewController () <UITextFieldDelegate,SignInDelegate>
@@ -537,6 +538,8 @@
             
             NSDictionary *dic=[[NSDictionary alloc] initWithDictionary:[rootDic objectForKey:@"data"]];
             NSLog(@"%@", dic);
+            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            appDelegate.loginUser = dic;
             
             [[LocalStroge sharedInstance] addObject:dic forKey:F_USER_INFORMATION filePath:NSDocumentDirectory];
             

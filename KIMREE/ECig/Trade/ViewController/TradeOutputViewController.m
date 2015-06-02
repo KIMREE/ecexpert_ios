@@ -9,7 +9,7 @@
 #import "TradeOutputViewController.h"
 #import "MainProductViewController.h"
 #import "GiftProductViewController.h"
-#import "AFNetworking.h"
+#import "AFNetworkingFactory.h"
 #import "ProductModel.h"
 
 @interface TradeOutputViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -47,11 +47,7 @@
     self.customerArray = [NSMutableArray array];
     self.dealerArray = [NSMutableArray array];
     
-    self.manager = [AFHTTPRequestOperationManager manager];
-    [self.manager setRequestSerializer:[AFHTTPRequestSerializer serializer]];
-    [self.manager setResponseSerializer:[AFJSONResponseSerializer serializer]];
-    [self.manager.requestSerializer setTimeoutInterval:10];
-    [self.manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil]];
+    self.manager = [AFNetworkingFactory networkingManager];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:[self.tradeInfoDic objectForKey:@"trade_no"] forKey:@"tradeno"];

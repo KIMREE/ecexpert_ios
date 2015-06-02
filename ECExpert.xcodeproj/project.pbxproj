@@ -136,6 +136,7 @@
 		7E219DCD19431BE9006F951A /* Luck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E219DCC19431BE9006F951A /* Luck@2x.png */; };
 		7E38D3761931F0C500A05559 /* navigationbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E38D3751931F0C500A05559 /* navigationbar@2x.png */; };
 		7E4478B918F43AA3009EF02D /* NearbyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4478B718F43AA3009EF02D /* NearbyViewController.m */; };
+		A1F652EF1B1D5968009B1E0C /* AFNetworkingFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F652EE1B1D5968009B1E0C /* AFNetworkingFactory.m */; };
 		C60C56341B0EC7C400C55014 /* SellerSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C60C56331B0EC7C400C55014 /* SellerSettingViewController.m */; };
 		C680B3F91AFDA04C00735682 /* MainProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C680B3F71AFDA04C00735682 /* MainProductViewController.m */; };
 		C681014318F7EDC4008599BB /* navigationbar_back.png in Resources */ = {isa = PBXBuildFile; fileRef = C681013418F7EDC4008599BB /* navigationbar_back.png */; };
@@ -517,6 +518,8 @@
 		7E38D3751931F0C500A05559 /* navigationbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar@2x.png"; sourceTree = "<group>"; };
 		7E4478B618F43AA3009EF02D /* NearbyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyViewController.h; sourceTree = "<group>"; };
 		7E4478B718F43AA3009EF02D /* NearbyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyViewController.m; sourceTree = "<group>"; };
+		A1F652ED1B1D5968009B1E0C /* AFNetworkingFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkingFactory.h; sourceTree = "<group>"; };
+		A1F652EE1B1D5968009B1E0C /* AFNetworkingFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkingFactory.m; sourceTree = "<group>"; };
 		C60C56321B0EC7C400C55014 /* SellerSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SellerSettingViewController.h; sourceTree = "<group>"; };
 		C60C56331B0EC7C400C55014 /* SellerSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SellerSettingViewController.m; sourceTree = "<group>"; };
 		C680B3F61AFDA04C00735682 /* MainProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainProductViewController.h; sourceTree = "<group>"; };
@@ -1602,6 +1605,8 @@
 			children = (
 				C6AC0DA31B15CB2300D716EF /* UIAlertView+Block.h */,
 				C6AC0DA41B15CB2300D716EF /* UIAlertView+Block.m */,
+				A1F652ED1B1D5968009B1E0C /* AFNetworkingFactory.h */,
+				A1F652EE1B1D5968009B1E0C /* AFNetworkingFactory.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -2623,6 +2628,7 @@
 				C6892BB51AFC604D0042E326 /* SellerViewController.m in Sources */,
 				6B82BEE2199AF5BD00C332D8 /* MainViewController.m in Sources */,
 				C6FC21981B15B4C900547A0A /* ASIS3Bucket.m in Sources */,
+				A1F652EF1B1D5968009B1E0C /* AFNetworkingFactory.m in Sources */,
 				C69E32881AFAF794004AFCE4 /* BaseViewController.m in Sources */,
 				C6FC21A71B15B4C900547A0A /* JRResponse.m in Sources */,
 				C694D7601B01F0960082E82B /* GiftProductViewController.m in Sources */,

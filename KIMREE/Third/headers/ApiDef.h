@@ -10,14 +10,18 @@
 #define jirui_ApiDef_h
 
 // 条形码查询接口
-#define API_BAR_CODE_URL @"http://www.kimree.com.cn/app/scancode.php?scancode=%@"
-#define API_LOGIN_URL_NEW @"http://www.kimree.com.cn/app/?action=login"
-#define API_SIGNIN_URL_NEW @"http://www.kimree.com.cn/app/?action=joinuser"
+#define API_BAR_CODE_URL @"http://www.kimree.com.cn/app/scancode.php?scancode=%@"  // 扫描条形码
+#define API_LOGIN_URL_NEW @"http://www.kimree.com.cn/app/?action=login"  // 登录
+#define API_LOGOUT_URL_NEW @"http://www.kimree.com.cn/app/?action=logout"  // 登出
+#define API_SIGNIN_URL_NEW @"http://www.kimree.com.cn/app/?action=joinuser" // 注册
 #define API_GETUSERINFO_URL_NEW @"http://www.kimree.com.cn/app/?action=getuserinfo" //获取个人信息
 #define API_CHECKVIP_URL @"http://www.kimree.com.cn/app/?action=checkvip"  // 根据用户id和会员卡号确定用户合法性
-#define API_TRADE_INPUT_URL @"http://www.kimree.com.cn/app/?action=typetrade"
-#define API_TRADE_RECORD_SELECT_URL @"http://www.kimree.com.cn/app/?action=selecttrade"
-#define API_TRADE_RECORD_DETAIL_URL @"http://www.kimree.com.cn/app/?action=tradeinfo"
+#define API_TRADE_INPUT_URL @"http://www.kimree.com.cn/app/?action=typetrade"  // 录入交易
+#define API_TRADE_RECORD_SELECT_URL @"http://www.kimree.com.cn/app/?action=selecttrade" // 查看交易记录
+#define API_TRADE_RECORD_DETAIL_URL @"http://www.kimree.com.cn/app/?action=tradeinfo"  // 交易记录详情
+#define API_EDITUSERINFO_URL_NEW @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=moduserinfo"       //修改个人信息
+#define API_MODIFY_PASSWORD_NEW @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=modpassword"               //修改个人密码
+#define API_UPLOADUSERHEADER_URL_NEW @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=moduserimage"  //修改用户图片
 
 
 // 服务器地址
