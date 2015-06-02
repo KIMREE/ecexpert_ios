@@ -52,7 +52,7 @@
 {
     double maxValue=0;
     for (int i=0; i<array.count; i++) {
-        if (fabsf([array[i] doubleValue])>fabs(maxValue)) {
+        if (fabsf([array[i] floatValue])>fabs(maxValue)) {
             maxValue=[array[i] doubleValue];
         }
 

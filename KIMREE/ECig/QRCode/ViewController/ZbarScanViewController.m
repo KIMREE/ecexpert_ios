@@ -109,7 +109,7 @@
     CGFloat w = SCAN_WIDTH;
     CGFloat h = SCAN_HEIGHT;
     
-    CGRect scanRect = (CGRect){ {y / SCAN_SCREEN_HEIGHT, x / SCAN_SCREEN_WIDTH} , {h / SCAN_SCREEN_HEIGHT, w / SCAN_SCREEN_WIDTH}};
+//    CGRect scanRect = (CGRect){ {y / SCAN_SCREEN_HEIGHT, x / SCAN_SCREEN_WIDTH} , {h / SCAN_SCREEN_HEIGHT, w / SCAN_SCREEN_WIDTH}};
     
     //设置ZBarReaderView的scanCrop属性
     _readerView.scanCrop = [self getScanCrop:CGRectMake(x, y, w, h) readerViewBounds:rvBounsRect];
