@@ -23,6 +23,11 @@
 
 @implementation CustomerViewController
 
+/**
+ *  用来定位clickView
+ */
+static NSInteger ClickViewTag = 100;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -32,6 +37,8 @@
     
     self.title = @"会员中心";
     
+    [self initPageViews];
+        
     // 初始化界面数据
     [self initPageInfo];
     
@@ -40,6 +47,185 @@
     
     // 右上方 设置按钮
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"setting"] style:UIBarButtonItemStylePlain target:self action:@selector(settingAction)];
+}
+
+/**
+ *  初始化界面参数
+ */
+- (void)initPageViews{
+    CGRect frame = self.view.frame;
+    CGFloat x = frame.origin.x;
+    CGFloat y = frame.origin.y;
+    CGFloat w = frame.size.width;
+    CGFloat h = frame.size.height;
+    if (self.navigationController) {
+        y += 64.0;
+        h -= 64.0;
+    }
+    if (self.tabBarController) {
+        h -= 49.0;
+    }
+    CGFloat headerH = h/4.0;
+    CGRect headerViewFrame = CGRectMake(x, y, w, headerH);
+    CGRect scrollViewFrame = CGRectMake(x, y+headerH, w, h - headerH);
+    
+    // headerView
+    CGFloat imageWH = 80.0;
+    CGFloat tagLabelW = 70.0;
+    CGFloat tagLabelH = 15.0;
+    CGFloat tagLabelFontSize = 14.0;
+    CGFloat labelUpDownDistance = 10.0;
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:headerViewFrame];
+    headerView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    
+    // image
+    CGRect userImageViewFrame = CGRectMake(20, (headerH - imageWH) / 2.0, imageWH, imageWH);
+    _userImageView = [[UIImageView alloc] initWithFrame:userImageViewFrame];
+    _userImageView.image = [UIImage imageNamed:@"accountHeader"];
+    _userImageView.backgroundColor = [UIColor clearColor];
+    _userImageView.layer.masksToBounds = YES;
+    _userImageView.layer.cornerRadius = imageWH / 2.0;
+    _userImageView.layer.borderWidth = 3;
+    _userImageView.layer.borderColor = RGB(202, 201, 200).CGColor;
+    
+    // user
+    CGRect userTagLabelFrame = CGRectMake(20 + imageWH + 5, (headerH - labelUpDownDistance) / 2.0 - tagLabelH, tagLabelW, tagLabelH);
+    UILabel *userTagLabel = [self buildLabelWithFrame: userTagLabelFrame andFontSize:tagLabelFontSize];
+    userTagLabel.text = @"用户名:";
+    
+    CGRect userNameLabelFrame = CGRectMake(userTagLabelFrame.origin.x + tagLabelW, userTagLabelFrame.origin.y, w - (userTagLabelFrame.origin.x + tagLabelW) - 5, tagLabelH);
+    _userNameLabel = [self buildLabelWithFrame:userNameLabelFrame andFontSize:tagLabelFontSize];
+    
+    // vip
+    CGRect userVipTagLabelFrame = CGRectMake(20 + imageWH + 5, (headerH + labelUpDownDistance) / 2.0, tagLabelW, tagLabelH);
+    UILabel *userVipTagLabel = [self buildLabelWithFrame:userVipTagLabelFrame andFontSize:tagLabelFontSize];
+    userVipTagLabel.text = @"会员卡号:";
+    
+    CGRect vipNumberLabelFrame = CGRectMake(userTagLabelFrame.origin.x + tagLabelW , userVipTagLabelFrame.origin.y, w - (userVipTagLabelFrame.origin.x + tagLabelW) - 5, tagLabelH);
+    _vipNumberLabel = [self buildLabelWithFrame:vipNumberLabelFrame andFontSize:tagLabelFontSize];
+    
+    [headerView addSubview:_userImageView];
+    [headerView addSubview:userTagLabel];
+    [headerView addSubview:_userNameLabel];
+    [headerView addSubview:userVipTagLabel];
+    [headerView addSubview:_vipNumberLabel];
+    [self.view addSubview:headerView];
+    
+    
+    // scroll
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:scrollViewFrame];
+    scrollView.backgroundColor = [UIColor clearColor];
+    scrollView.contentSize = scrollViewFrame.size; // 当contentSize <= scrollFrame 的时候，scroll不能进行滚动。 可以通过设置 contentInset 来解决
+//    scrollView.contentInset = UIEdgeInsetsMake(0, 0, 1, 1);
+    scrollView.contentSize = CGSizeMake(scrollViewFrame.size.width + 0.5, scrollViewFrame.size.height + 0.5);
+    scrollView.scrollEnabled = YES;
+    
+    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, scrollViewFrame.size.width, scrollViewFrame.size.height)];
+    contentView.backgroundColor = [UIColor clearColor];
+    
+    CGFloat cardDistance = 10.0;
+    CGFloat cardHeight = contentView.frame.size.height / 3.0 - cardDistance;
+    CGFloat rowHeight = contentView.frame.size.height / 3.0;
+    CGFloat rowWidth = contentView.frame.size.width - 2 * cardDistance;
+    CGFloat sizeSmall = 1.0;
+    CGFloat sizeLarge = 1.2;
+    CGFloat rowNum = 0;
+    
+    // rowNum = 0
+    rowNum = 0;
+    CGRect vipCardFrame = CGRectMake(cardDistance, rowNum * rowHeight + cardDistance / 2.0, (rowWidth - cardDistance) * sizeLarge / (sizeSmall + sizeLarge), cardHeight);
+    UIView *vipCard = [self buildCardViewWithFrame:vipCardFrame BackgroundColor:RGB(241, 79, 89) Image:@"vipcard_ecig" Title:@"会员卡"];
+    _vipCardView = [vipCard viewWithTag:ClickViewTag];
+    
+    CGRect shopCardFrame = CGRectMake(vipCardFrame.origin.x + vipCardFrame.size.width + cardDistance,rowNum * rowHeight + cardDistance / 2.0, (rowWidth - cardDistance) * sizeSmall / (sizeSmall + sizeLarge), cardHeight);
+    UIView *shopCard = [self buildCardViewWithFrame:shopCardFrame BackgroundColor:RGB(77, 167, 217) Image:@"products_ecig" Title:@"精品店展示"];
+    _showProductsView = [shopCard viewWithTag:ClickViewTag];
+    
+    // rowNum = 1
+    rowNum = 1;
+    CGRect nearByFrame = CGRectMake(cardDistance, rowNum * rowHeight + cardDistance / 2.0, rowWidth, cardHeight);
+    UIView *nearByCard = [self buildCardViewWithFrame:nearByFrame BackgroundColor:RGB(247, 191, 80) Image:@"shops_ecig" Title:@"周边体验店"];
+    _nearbyStoreView = [nearByCard viewWithTag:ClickViewTag];
+    
+    // rowNum = 2
+    rowNum = 2;
+    CGRect recordFrame = CGRectMake(cardDistance, rowNum * rowHeight + cardDistance / 2.0, (rowWidth - cardDistance) * sizeSmall / (sizeSmall + sizeLarge), cardHeight);
+    UIView *recordCard = [self buildCardViewWithFrame:recordFrame BackgroundColor:RGB(131, 199, 92) Image:@"myrecord_ecig" Title:@"我的记录"];
+    _recordView = [recordCard viewWithTag:ClickViewTag];
+    
+    CGRect feedBackFrame = CGRectMake(recordFrame.origin.x + recordFrame.size.width + cardDistance,rowNum * rowHeight + cardDistance / 2.0, (rowWidth - cardDistance) * sizeLarge / (sizeSmall + sizeLarge), cardHeight);
+    UIView *feedBackCard = [self buildCardViewWithFrame:feedBackFrame BackgroundColor:RGB(239, 97, 66) Image:@"feedback_ecig" Title:@"用户反馈"];
+    _feedbackView = [feedBackCard viewWithTag:ClickViewTag];
+    
+    [contentView addSubview:vipCard];
+    [contentView addSubview:shopCard];
+    [contentView addSubview:nearByCard];
+    [contentView addSubview:recordCard];
+    [contentView addSubview:feedBackCard];
+    [scrollView addSubview:contentView];
+    [self.view addSubview:scrollView];
+}
+
+/**
+ *  初始化界面磁贴
+ *
+ *  @param cardFrame 磁贴Frame
+ *  @param color     背景颜色
+ *  @param imageName 中间显示图片
+ *  @param title     磁贴功能名称
+ *
+ *  @return 初始化完成后的磁贴View
+ */
+- (UIView *)buildCardViewWithFrame:(CGRect)cardFrame BackgroundColor:(UIColor *)color Image:(NSString *)imageName Title:(NSString *)title{
+    UIView *view = [[UIView alloc] initWithFrame:cardFrame];
+    view.backgroundColor = color;
+    
+    CGFloat clickViewWidth = 100.0;
+    CGFloat clickViewHeight = cardFrame.size.height;
+    CGRect clickViewFrame = CGRectMake((cardFrame.size.width - clickViewWidth) / 2.0 , 0, clickViewWidth, clickViewHeight);
+    UIView *clickView = [[UIView alloc] initWithFrame:clickViewFrame];
+    clickView.backgroundColor = [UIColor clearColor];
+    clickView.tag = ClickViewTag; // 根据tag定位clickView
+    
+    CGFloat labelWidth = clickViewWidth;
+    CGFloat labelHeight = 21.0;
+    CGFloat imageWH = 60.0;
+    CGFloat imageLabelDistance = 5.0;
+    
+    CGFloat imageViewY = (clickViewHeight - (labelHeight + imageWH + imageLabelDistance)) / 2.0;
+    CGFloat labelY = imageViewY + imageWH + imageLabelDistance;
+    
+    CGRect imageViewFrame = CGRectMake((clickViewWidth - imageWH) / 2.0, imageViewY, imageWH, imageWH);
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:imageViewFrame];
+    imageView.backgroundColor = [UIColor clearColor];
+    imageView.image = [UIImage imageNamed:imageName];
+    
+    CGFloat labelFontSize = 17.0;
+    CGRect labelFrame = CGRectMake((clickViewWidth - labelWidth) / 2.0, labelY, labelWidth, labelHeight);
+    UILabel *label = [self buildLabelWithFrame:labelFrame andFontSize:labelFontSize];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = title;
+    
+    [clickView addSubview:imageView];
+    [clickView addSubview:label];
+    [view addSubview:clickView];
+    return view;
+}
+
+/**
+ *  初始化label
+ *
+ *  @param labelFrame labelFrame
+ *  @param fontSize   label字体大小
+ *
+ *  @return 组装好frame和字体的label
+ */
+- (UILabel *)buildLabelWithFrame:(CGRect)labelFrame andFontSize:(CGFloat)fontSize{
+    UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont systemFontOfSize:fontSize];
+    return label;
 }
 
 - (void)initPageInfo{
@@ -54,10 +240,6 @@
         [self.userImageView setImage:[UIImage imageNamed:@"accountHeader"]];
     }else{
         [self.userImageView setImageWithURL:[NSURL URLWithString:[[[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory] objectForKey:@"customer_headimage"]]];
-        self.userImageView.layer.masksToBounds = YES;
-        self.userImageView.layer.cornerRadius = 41.5;
-        self.userImageView.layer.borderWidth = 3;
-        self.userImageView.layer.borderColor = RGB(202, 201, 200).CGColor;
     }
 }
 
@@ -65,7 +247,7 @@
     [super viewWillAppear:animated];
 }
 
-
+#pragma mark - 磁贴点击事件
 - (void)settingAction{
     [self.navigationController pushViewController:[[MemberSettingViewController alloc] init] animated:YES];
 }
@@ -125,6 +307,8 @@
 - (void)feedbackTapAction{
     [self feedback];
 }
+
+#pragma mark -
 
 //feedback view
 -(void)feedback{

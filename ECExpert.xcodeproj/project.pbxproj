@@ -160,7 +160,6 @@
 		C69E328C1AFAF794004AFCE4 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C69E32861AFAF794004AFCE4 /* RegisterViewController.m */; };
 		C69E328D1AFAF794004AFCE4 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C69E32871AFAF794004AFCE4 /* RegisterViewController.xib */; };
 		C69E32981AFAFC7C004AFCE4 /* CustomerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C69E32961AFAFC7C004AFCE4 /* CustomerViewController.m */; };
-		C69E32991AFAFC7C004AFCE4 /* CustomerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C69E32971AFAFC7C004AFCE4 /* CustomerViewController.xib */; };
 		C69E329C1AFAFFDB004AFCE4 /* UserModelECig.m in Sources */ = {isa = PBXBuildFile; fileRef = C69E329B1AFAFFDB004AFCE4 /* UserModelECig.m */; };
 		C6A9B49C1B0B11A600789C76 /* accountHint@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6A9B49B1B0B11A600789C76 /* accountHint@2x.png */; };
 		C6AC0D6B1B15BB2F00D716EF /* MDQRCodeGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C6AC0D6A1B15BB2F00D716EF /* MDQRCodeGenerator.m */; };
@@ -213,7 +212,6 @@
 		C6CB799B1940676300FFA117 /* icon_load_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6CB798F1940676300FFA117 /* icon_load_1@2x.png */; };
 		C6CB799C1940676300FFA117 /* icon_load_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6CB79901940676300FFA117 /* icon_load_0@2x.png */; };
 		C6D709481B059A6800B625AF /* TradeRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D709461B059A6800B625AF /* TradeRecordViewController.m */; };
-		C6D709491B059A6800B625AF /* TradeRecordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6D709471B059A6800B625AF /* TradeRecordViewController.xib */; };
 		C6DF1B851ACD295500803048 /* guide3_h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6DF1B7F1ACD295500803048 /* guide3_h@2x.png */; };
 		C6DF1B861ACD295500803048 /* guide2_h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6DF1B801ACD295500803048 /* guide2_h@2x.png */; };
 		C6DF1B871ACD295500803048 /* guide1_h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6DF1B811ACD295500803048 /* guide1_h@2x.png */; };
@@ -557,7 +555,6 @@
 		C69E32871AFAF794004AFCE4 /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
 		C69E32951AFAFC7C004AFCE4 /* CustomerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerViewController.h; sourceTree = "<group>"; };
 		C69E32961AFAFC7C004AFCE4 /* CustomerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerViewController.m; sourceTree = "<group>"; };
-		C69E32971AFAFC7C004AFCE4 /* CustomerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomerViewController.xib; sourceTree = "<group>"; };
 		C69E329A1AFAFFDB004AFCE4 /* UserModelECig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModelECig.h; sourceTree = "<group>"; };
 		C69E329B1AFAFFDB004AFCE4 /* UserModelECig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModelECig.m; sourceTree = "<group>"; };
 		C6A9B49B1B0B11A600789C76 /* accountHint@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "accountHint@2x.png"; sourceTree = "<group>"; };
@@ -661,7 +658,6 @@
 		C6CB79901940676300FFA117 /* icon_load_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_load_0@2x.png"; sourceTree = "<group>"; };
 		C6D709451B059A6800B625AF /* TradeRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TradeRecordViewController.h; sourceTree = "<group>"; };
 		C6D709461B059A6800B625AF /* TradeRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TradeRecordViewController.m; sourceTree = "<group>"; };
-		C6D709471B059A6800B625AF /* TradeRecordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TradeRecordViewController.xib; sourceTree = "<group>"; };
 		C6DF1B7F1ACD295500803048 /* guide3_h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide3_h@2x.png"; sourceTree = "<group>"; };
 		C6DF1B801ACD295500803048 /* guide2_h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide2_h@2x.png"; sourceTree = "<group>"; };
 		C6DF1B811ACD295500803048 /* guide1_h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide1_h@2x.png"; sourceTree = "<group>"; };
@@ -1370,7 +1366,6 @@
 				C694D75F1B01F0960082E82B /* GiftProductViewController.m */,
 				C6D709451B059A6800B625AF /* TradeRecordViewController.h */,
 				C6D709461B059A6800B625AF /* TradeRecordViewController.m */,
-				C6D709471B059A6800B625AF /* TradeRecordViewController.xib */,
 				C699F8FF1B09C1C900F15F4C /* TradeOutputViewController.h */,
 				C699F9001B09C1C900F15F4C /* TradeOutputViewController.m */,
 			);
@@ -1504,7 +1499,6 @@
 			children = (
 				C69E32951AFAFC7C004AFCE4 /* CustomerViewController.h */,
 				C69E32961AFAFC7C004AFCE4 /* CustomerViewController.m */,
-				C69E32971AFAFC7C004AFCE4 /* CustomerViewController.xib */,
 				C6892BB21AFC604D0042E326 /* SellerViewController.h */,
 				C6892BB31AFC604D0042E326 /* SellerViewController.m */,
 				C6892BB41AFC604D0042E326 /* SellerViewController.xib */,
@@ -2487,7 +2481,6 @@
 				6BC8B8BE1957C083002473BF /* location_normal@2x.png in Resources */,
 				6B2116AC198B3FC200E8A10F /* nothing@2x.png in Resources */,
 				6BEFCF381A32932D00153452 /* appleIcon_spotlight@2x.png in Resources */,
-				C6D709491B059A6800B625AF /* TradeRecordViewController.xib in Resources */,
 				6B2659B11949887E00114CE9 /* checkbox_1@2x.png in Resources */,
 				C6DF1B871ACD295500803048 /* guide1_h@2x.png in Resources */,
 				C69E328B1AFAF794004AFCE4 /* LoginViewControllerECig.xib in Resources */,
@@ -2501,7 +2494,6 @@
 				6B38957719D29935000A367A /* agreement_strings_eng.html in Resources */,
 				6BFDF71819527CA100DA7CD9 /* Localizable.strings in Resources */,
 				6B20A669195524F6002D9EB1 /* dealerLogo@2x.jpg in Resources */,
-				C69E32991AFAFC7C004AFCE4 /* CustomerViewController.xib in Resources */,
 				C681014418F7EDC4008599BB /* navigationbar_back@2x.png in Resources */,
 				6B5752D519A18D970016E3FC /* 163@2x.png in Resources */,
 				6B5752DE19A18D970016E3FC /* qq@2x.png in Resources */,
