@@ -10,25 +10,26 @@
 #import "LoginViewController.h"
 
 @interface AccountViewController ()
-@property (nonatomic,strong)  ItemTableViewController  *itemView;
-@property(strong,nonatomic) ASIFormDataRequest *request;
+
+@property (nonatomic,strong) ItemTableViewController *itemView;
+@property (strong,nonatomic) ASIFormDataRequest      *request;
 //显示个人信息
 @property (strong,nonatomic) UIImageView *headView,*headViewBg;
 @property (strong,nonatomic) UILabel *nickname,*sign,*gender,*region,*birthday,*email,*phone,*account,*level;
 //出生日期
-@property(nonatomic, strong) UIDatePicker *birthdayDatePicker;
-@property (nonatomic,strong)  UIView *birthdayView;
+@property (nonatomic, strong) UIDatePicker            *birthdayDatePicker;
+@property (nonatomic,strong ) UIView                  *birthdayView;
 
 
-@property(nonatomic,strong) UIButton *sureButton,*cancelButton;
-@property(nonatomic, strong) NSDate *birthdayData;
+@property (nonatomic,strong ) UIButton *sureButton             , *cancelButton;
+@property (nonatomic, strong) NSDate                  *birthdayData;
 //头像
-@property(strong,nonatomic) UIImagePickerController *imagePickerController;
-@property(nonatomic, strong) UIImage *photo;
+@property (strong,nonatomic ) UIImagePickerController *imagePickerController;
+@property (nonatomic, strong) UIImage                 *photo;
 //
-@property(nonatomic,strong) UITableView *accountTableView;
-@property(nonatomic,strong) NSDictionary *userInformationDic;
-@property(nonatomic,assign) BOOL itemChanged;
+@property (nonatomic,strong ) UITableView             *accountTableView;
+@property (nonatomic,strong ) NSDictionary            *userInformationDic;
+@property (nonatomic,assign ) BOOL                    itemChanged;
 
 @end
 
@@ -89,7 +90,7 @@
     [_headView addGestureRecognizer:singleTap];
     
     
-
+    
 }
 
 
@@ -100,7 +101,7 @@
     //birthday date picker
     if (self.birthdayDatePicker == nil) {
         _birthdayDatePicker = [[UIDatePicker alloc] init];
-       _birthdayDatePicker.backgroundColor = COLOR_BACKGROUND;
+        _birthdayDatePicker.backgroundColor = COLOR_BACKGROUND;
         [_birthdayDatePicker addTarget:self action:@selector(setBirthdayData) forControlEvents:UIControlEventValueChanged];
         _birthdayDatePicker.datePickerMode = UIDatePickerModeDate;
         NSDate *currentDate = [NSDate date];
@@ -112,7 +113,7 @@
     }
     
     _birthdayView=[[UIView alloc] init];
-      _birthdayView.frame=CGRectMake(0, kScreen_Height, kScreen_Width, 310);
+    _birthdayView.frame=CGRectMake(0, kScreen_Height, kScreen_Width, 310);
     //增加两按钮
     _sureButton=[UIButton buttonWithType:UIButtonTypeSystem];
     _sureButton.frame = CGRectMake(160, 0, 160, 50);
@@ -137,7 +138,7 @@
     //加dayDatePicker
     _birthdayDatePicker.frame = CGRectMake(0, 50, 320, 260);
     [_birthdayView addSubview:_birthdayDatePicker];
-
+    
 }
 
 
@@ -151,7 +152,9 @@
     }
 }
 
-
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+}
 
 #pragma mark - Table view data source
 
@@ -218,12 +221,12 @@
         _userInformationDic= [[LocalStroge  sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory];
         
     }
-  
-
+    
+    
     
     if (indexPath.section==0&&indexPath.row==0) {
         cell.selectionStyle=UITableViewCellSelectionStyleNone;
-         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
         //加载背景，头像，及用户名，会员级别
         _account.text=[_userInformationDic objectForKey:@"customer_name"];
         _level.text=[NSString stringWithFormat:NSLocalizedString(@"Level:%@", @""),[_userInformationDic objectForKey:@"customer_degree"]];
@@ -241,20 +244,20 @@
         [cell addSubview:_headView];
         
     }  if (indexPath.section==0&&indexPath.row==1) {
-  
+        
         cell.textLabel.text=NSLocalizedString(@"Nickname", nil);
         _nickname=[self LabelInit:_nickname name:[_userInformationDic objectForKey:@"customer_nickname"] size:CGRectMake(100, 0, 190, 50) numerOfLines:1 fontSize:15];
         [cell addSubview:_nickname];
         
     }  if (indexPath.section==0&&indexPath.row==2) {
-
+        
         cell.textLabel.text=NSLocalizedString(@"Signature", nil);
-       _sign=[self LabelInit:_sign name:[_userInformationDic objectForKey:@"customer_sign"] size:CGRectMake(100, 0, 190, 50) numerOfLines:1 fontSize:15];
+        _sign=[self LabelInit:_sign name:[_userInformationDic objectForKey:@"customer_sign"] size:CGRectMake(100, 0, 190, 50) numerOfLines:1 fontSize:15];
         [cell addSubview:_sign];
         
         
     }  if (indexPath.section==1&&indexPath.row==0) {
-  
+        
         cell.textLabel.text=NSLocalizedString(@"Gender", nil);
         
         _gender=[self LabelInit:_gender name:nil size:CGRectMake(100, 0, 190, 50) numerOfLines:1 fontSize:15];
@@ -269,12 +272,12 @@
         
         
     }  if (indexPath.section==1&&indexPath.row==1) {
-
+        
         
         cell.textLabel.text=NSLocalizedString(@"Region", nil);
-      _region=[self LabelInit:_region name:[_userInformationDic objectForKey:@"customer_address"] size:CGRectMake(100, 0, 190, 50) numerOfLines:1 fontSize:15];
+        _region=[self LabelInit:_region name:[_userInformationDic objectForKey:@"customer_address"] size:CGRectMake(100, 0, 190, 50) numerOfLines:1 fontSize:15];
         [cell addSubview:_region];
-      
+        
         
     }  if (indexPath.section==1&&indexPath.row==2) {
         
@@ -283,29 +286,29 @@
         [cell addSubview:_birthday];
         
     }  if (indexPath.section==1&&indexPath.row==3) {
-
+        
         
         cell.textLabel.text=NSLocalizedString(@"Email", nil);
         _email=[self LabelInit:_email name:[_userInformationDic objectForKey:@"customer_email"] size:CGRectMake(100, 0, 190, 50) numerOfLines:1 fontSize:15];
         [cell addSubview:_email];
         
     }  if (indexPath.section==1&&indexPath.row==4) {
-   
+        
         
         cell.textLabel.text=NSLocalizedString(@"Phone", nil);
         _phone=[self LabelInit:_phone name:[_userInformationDic objectForKey:@"customer_phone"] size:CGRectMake(100, 0, 190, 50) numerOfLines:1 fontSize:15];
         [cell addSubview:_phone];
         
     }  if (indexPath.section==2&&indexPath.row==0) {
-
+        
         
         cell.textLabel.text=NSLocalizedString(@"Password", nil);
-  
+        
     }
     
-
-       // [self getUserInformation];
- 
+    
+    // [self getUserInformation];
+    
     return cell;
 }
 
@@ -328,48 +331,48 @@
     self.hidesBottomBarWhenPushed=YES;
     
     if (!(indexPath.section==0&indexPath.row==0)) {
-    
- 
-    
-    
+        
+        
+        
+        
         if (indexPath.section==1&indexPath.row==2) {
-        [self popDatePicker];
-         }else{
-        
-       _itemView=[[ItemTableViewController alloc] init];
-        
-        if(indexPath.section==0&indexPath.row==1){
-            _itemView.itemTitle=NSLocalizedString(@"Nickname", "");
-             _itemView.itemText=_nickname.text;
-        } if(indexPath.section==0&indexPath.row==2){
-            _itemView.itemTitle=NSLocalizedString(@"Signature", "");
-            _itemView.itemText=_sign.text;
-        } if(indexPath.section==1&indexPath.row==0){
-            _itemView.itemTitle=NSLocalizedString(@"Gender", "");
-            _itemView.itemText=_gender.text;
-        } if(indexPath.section==1&indexPath.row==1){
-            _itemView.itemTitle=NSLocalizedString(@"Region", "");
-            _itemView.itemText=_region.text;
-        } if(indexPath.section==1&indexPath.row==3){
-            _itemView.itemTitle=NSLocalizedString(@"Email", "");
-            _itemView.itemText=_email.text;
-        } if(indexPath.section==1&indexPath.row==4){
-            _itemView.itemTitle=NSLocalizedString(@"Phone", "");
-             _itemView.itemText=_phone.text;
-        } if(indexPath.section==2&indexPath.row==0){
-            _itemView.itemTitle=NSLocalizedString(@"Password", "");
-           
+            [self popDatePicker];
+        }else{
+            
+            _itemView=[[ItemTableViewController alloc] init];
+            
+            if(indexPath.section==0&indexPath.row==1){
+                _itemView.itemTitle=NSLocalizedString(@"Nickname", "");
+                _itemView.itemText=_nickname.text;
+            } if(indexPath.section==0&indexPath.row==2){
+                _itemView.itemTitle=NSLocalizedString(@"Signature", "");
+                _itemView.itemText=_sign.text;
+            } if(indexPath.section==1&indexPath.row==0){
+                _itemView.itemTitle=NSLocalizedString(@"Gender", "");
+                _itemView.itemText=_gender.text;
+            } if(indexPath.section==1&indexPath.row==1){
+                _itemView.itemTitle=NSLocalizedString(@"Region", "");
+                _itemView.itemText=_region.text;
+            } if(indexPath.section==1&indexPath.row==3){
+                _itemView.itemTitle=NSLocalizedString(@"Email", "");
+                _itemView.itemText=_email.text;
+            } if(indexPath.section==1&indexPath.row==4){
+                _itemView.itemTitle=NSLocalizedString(@"Phone", "");
+                _itemView.itemText=_phone.text;
+            } if(indexPath.section==2&indexPath.row==0){
+                _itemView.itemTitle=NSLocalizedString(@"Password", "");
+                
+            }
+            
+            
+            _itemChanged=YES;
+            _itemView.title=_itemView.itemTitle;
+            //后台必须传nickname，否则出错，后台修正
+            _itemView.nickName=_nickname.text;
+            [self.navigationController  pushViewController:_itemView animated:YES];
+            
         }
- 
-        
-        _itemChanged=YES;
-        _itemView.title=_itemView.itemTitle;
-         //后台必须传nickname，否则出错，后台修正
-        _itemView.nickName=_nickname.text;
-        [self.navigationController  pushViewController:_itemView animated:YES];
-        
     }
-  }
 }
 
 
@@ -404,7 +407,7 @@
     
     
     
-	NSUInteger sourceType = 0;
+    NSUInteger sourceType = 0;
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         switch (buttonIndex) {
             case 0:
@@ -424,9 +427,9 @@
         }
     }
     
-	_imagePickerController = [[UIImagePickerController alloc] init];
+    _imagePickerController = [[UIImagePickerController alloc] init];
     _imagePickerController.delegate = self;
-	_imagePickerController.allowsEditing = YES;
+    _imagePickerController.allowsEditing = YES;
     _imagePickerController.sourceType = sourceType;
     
     
@@ -439,7 +442,7 @@
 {
     
     
-	_photo = [info objectForKey:UIImagePickerControllerEditedImage];
+    _photo = [info objectForKey:UIImagePickerControllerEditedImage];
     _photo =[self OriginImage:_photo scaleToSize:CGSizeMake(180, 180)];
     
     _headView.image=_photo;
@@ -454,9 +457,9 @@
     [self dismissViewControllerAnimated:YES completion:^{
         //模态对话框隐藏之后执行上传
         
-       // [self uploadPotoSave];
-        [self LinkNetWork:API_UPLOADUSERHEADER_URL];
-
+        // [self uploadPotoSave];
+        [self LinkNetWork:API_UPLOADUSERHEADER_URL_NEW];
+        
     }];
 }
 
@@ -509,7 +512,7 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:0.3];//动画时间长度，单位秒，浮点数
     [self.view exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
-
+    
     if (IS_INCH4) {
         _birthdayView.frame=CGRectMake(0, 303, kScreen_Width, 310);
     }else {
@@ -525,25 +528,25 @@
 
 -(void)animationFinished{
     
-
+    
 }
 
 
 -(void)cancel
 {
     [self pushDatePicker];
-
-
+    
+    
 }
 
 
 
 
 -(void)saveBirthday
-{  
-    [self LinkNetWork:API_EDITUSERINFO_URL];
+{
+    [self LinkNetWork:API_EDITUSERINFO_URL_NEW];
     [self  pushDatePicker];
-
+    
 }
 
 
@@ -553,7 +556,7 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:0.3];//动画时间长度，单位秒，浮点数
     [UIView setAnimationDelegate:self];
-     _birthdayView.frame=CGRectMake(0, kScreen_Height, kScreen_Width, 310);
+    _birthdayView.frame=CGRectMake(0, kScreen_Height, kScreen_Width, 310);
     // 动画完毕后调用animationFinished
     //[UIView setAnimationDidStopSelector:@selector(animationFinished)];
     [UIView commitAnimations];
@@ -572,39 +575,45 @@
     [_request setShouldAttemptPersistentConnection:NO];
     [_request setTimeOutSeconds:10];
     
-    if ([strUrl isEqualToString:API_GETUSERINFO_URL]) {
+    if ([strUrl isEqualToString:API_GETUSERINFO_URL_NEW]) {
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        NSDictionary *loginUserInfo = appDelegate.loginUser;
+        [_request setPostValue:[loginUserInfo objectForKey:@"usertype"] forKey:@"usertype"];
         _request.tag=102;
     }
-    if ([strUrl isEqualToString:API_EDITUSERINFO_URL]) {
+    if ([strUrl isEqualToString:API_EDITUSERINFO_URL_NEW]) {
         _request.tag=103;
         [_request setPostValue:_nickname.text forKey:@"customer_nickname"];
         [_request setPostValue:_birthday.text forKey:@"customer_birth"];
         //[MMProgressHUD showWithTitle:nil status:@"Sending..." ];
     }
-    if ([strUrl isEqualToString:API_UPLOADUSERHEADER_URL]) {
+    if ([strUrl isEqualToString:API_UPLOADUSERHEADER_URL_NEW]) {
         _request.tag=104;
         //图片本地处理，不压缩
         NSData *imageData = UIImageJPEGRepresentation(_photo, 1);
         [_request addData:imageData withFileName:@"head.jpeg" andContentType:@"image/jpeg" forKey:@"customer_headimage"];
+        
+        // 菊花圈
+        [MMProgressHUD showWithTitle:nil status:NSLocalizedString(@"Sending...", @"")  ];
     }
     
-
     [_request startAsynchronous];
 }
 
 - (void)requestFailed:(ASIFormDataRequest *)request
 {
-//    if (request.tag==102) {
-//        [MMProgressHUD showWithTitle:nil status:NSLocalizedString(@"Get user information...", "")];
-//        [MMProgressHUD dismissWithError:NSLocalizedString(@"Failed to connect link to server!", "")];
-//    }
+    //    if (request.tag==102) {
+    //        [MMProgressHUD showWithTitle:nil status:NSLocalizedString(@"Get user information...", "")];
+    //        [MMProgressHUD dismissWithError:NSLocalizedString(@"Failed to connect link to server!", "")];
+    //    }
     
-  [JDStatusBarNotification showWithStatus:NSLocalizedString(@"Failed to connect link to server!", "") dismissAfter:1.0f];
+    [JDStatusBarNotification showWithStatus:NSLocalizedString(@"Failed to connect link to server!", "") dismissAfter:1.0f];
 }
 
 - (void)requestFinished:(ASIFormDataRequest *)request
 {
     NSData *jsonData = [request.responseString dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     NSError *error;
     NSMutableDictionary *rootDic = [[CJSONDeserializer deserializer] deserialize:jsonData error:&error];
     int status=[[rootDic objectForKey:@"code"] intValue];
@@ -617,18 +626,21 @@
             [JDStatusBarNotification showWithStatus:NSLocalizedString(@"Successful modification!", "") dismissAfter:1.0f];
             [_accountTableView reloadData];
             
+            //TODO: by Fran
+            // 修改数据后要重新查询登录用户信息，查询成功后需要刷新界面显示，在需要刷新显示数据的地方接收该通知进行处理
+            [[NSNotificationCenter defaultCenter] postNotificationName:KM_REFRESH_LOGIN_USER_INFO object:nil];
         }
         else{
             
         }
         
-
+        
     }
     if (request.tag==103) {
         
-    if (status==1) {
+        if (status==1) {
             
-            [self LinkNetWork:API_GETUSERINFO_URL];
+            [self LinkNetWork:API_GETUSERINFO_URL_NEW];
             
         }
         else{
@@ -637,23 +649,29 @@
             [alertView show];
             
         }
-
+        
         
     }
     if (request.tag==104) {
         if (status==1) {
             
-           [self LinkNetWork:API_GETUSERINFO_URL];
-       
+            [self LinkNetWork:API_GETUSERINFO_URL_NEW];
+            
+            [MMProgressHUD dismissWithSuccess:NSLocalizedString(@"Successful modification!", "") title:@"" afterDelay:1];
             
         }
         else{
             
-            UIAlertView *alertView=[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"login timeout,please login again", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Sure", @"") otherButtonTitles: nil];
+            // 之前的逻辑是修改图片没成功
+            //            UIAlertView *alertView=[[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"login timeout,please login again", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Sure", @"") otherButtonTitles: nil];
+            //            [alertView show];
             
-            [alertView show];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:[rootDic objectForKey:@"data"] delegate:self cancelButtonTitle:NSLocalizedString(@"Sure", @"") otherButtonTitles: nil];
+            [alert showAlertViewWithCompleteBlock:^(NSInteger buttonIndex) {
+                
+            }];
         }
-
+        
     }
     
 }

@@ -12,12 +12,13 @@
 #import "MemberSettingViewController.h"
 #import "ShowQRCodeViewController.h"
 #import "TradeRecordViewController.h"
+#import "MagnetView.h"
 
 @interface CustomerViewController () <UITextViewDelegate>
 
-@property (strong,nonatomic) UITextView *information;
-@property (strong,nonatomic) ASIFormDataRequest *request;
-@property (strong, nonatomic) UIViewController *feedbackVC;
+@property (strong,nonatomic ) UITextView         *information;
+@property (strong,nonatomic ) ASIFormDataRequest *request;
+@property (strong, nonatomic) UIViewController   *feedbackVC;
 
 @end
 
@@ -28,12 +29,15 @@
  */
 static NSInteger ClickViewTag = 100;
 
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KM_REFRESH_LOGIN_USER_INFO object:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.translucentTabBar = YES;
     self.translucentNavigationBar = YES;
-    
     
     self.title = @"会员中心";
     
@@ -47,6 +51,9 @@ static NSInteger ClickViewTag = 100;
     
     // 右上方 设置按钮
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"setting"] style:UIBarButtonItemStylePlain target:self action:@selector(settingAction)];
+    
+    // 监控登录用户数据刷新通知, 注意要在dealloc移除
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initPageInfo) name:KM_REFRESH_LOGIN_USER_INFO object:nil];
 }
 
 /**
@@ -54,10 +61,10 @@ static NSInteger ClickViewTag = 100;
  */
 - (void)initPageViews{
     CGRect frame = self.view.frame;
-    CGFloat x = frame.origin.x;
-    CGFloat y = frame.origin.y;
-    CGFloat w = frame.size.width;
-    CGFloat h = frame.size.height;
+    CGFloat x    = frame.origin.x;
+    CGFloat y    = frame.origin.y;
+    CGFloat w    = frame.size.width;
+    CGFloat h    = frame.size.height;
     if (self.navigationController) {
         y += 64.0;
         h -= 64.0;
@@ -65,15 +72,15 @@ static NSInteger ClickViewTag = 100;
     if (self.tabBarController) {
         h -= 49.0;
     }
-    CGFloat headerH = h/4.0;
+    CGFloat headerH        = h/4.0;
     CGRect headerViewFrame = CGRectMake(x, y, w, headerH);
     CGRect scrollViewFrame = CGRectMake(x, y+headerH, w, h - headerH);
     
     // headerView
-    CGFloat imageWH = 80.0;
-    CGFloat tagLabelW = 70.0;
-    CGFloat tagLabelH = 15.0;
-    CGFloat tagLabelFontSize = 14.0;
+    CGFloat imageWH             = 80.0;
+    CGFloat tagLabelW           = 70.0;
+    CGFloat tagLabelH           = 15.0;
+    CGFloat tagLabelFontSize    = 14.0;
     CGFloat labelUpDownDistance = 10.0;
     
     UIView *headerView = [[UIView alloc] initWithFrame:headerViewFrame];
@@ -116,21 +123,23 @@ static NSInteger ClickViewTag = 100;
     // scroll
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:scrollViewFrame];
     scrollView.backgroundColor = [UIColor clearColor];
-    scrollView.contentSize = scrollViewFrame.size; // 当contentSize <= scrollFrame 的时候，scroll不能进行滚动。 可以通过设置 contentInset 来解决
+//    scrollView.contentSize = scrollViewFrame.size; // 当contentSize <= scrollFrame 的时候，scroll不能进行滚动。 可以通过设置 contentInset 来解决
 //    scrollView.contentInset = UIEdgeInsetsMake(0, 0, 1, 1);
     scrollView.contentSize = CGSizeMake(scrollViewFrame.size.width + 0.5, scrollViewFrame.size.height + 0.5);
     scrollView.scrollEnabled = YES;
+    scrollView.userInteractionEnabled = YES;
+//    scrollView.delaysContentTouches = NO;
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, scrollViewFrame.size.width, scrollViewFrame.size.height)];
     contentView.backgroundColor = [UIColor clearColor];
     
     CGFloat cardDistance = 10.0;
-    CGFloat cardHeight = contentView.frame.size.height / 3.0 - cardDistance;
-    CGFloat rowHeight = contentView.frame.size.height / 3.0;
-    CGFloat rowWidth = contentView.frame.size.width - 2 * cardDistance;
-    CGFloat sizeSmall = 1.0;
-    CGFloat sizeLarge = 1.2;
-    CGFloat rowNum = 0;
+    CGFloat cardHeight   = contentView.frame.size.height / 3.0 - cardDistance;
+    CGFloat rowHeight    = contentView.frame.size.height / 3.0;
+    CGFloat rowWidth     = contentView.frame.size.width - 2 * cardDistance;
+    CGFloat sizeSmall    = 1.0;
+    CGFloat sizeLarge    = 1.2;
+    CGFloat rowNum       = 0;
     
     // rowNum = 0
     rowNum = 0;
@@ -178,23 +187,23 @@ static NSInteger ClickViewTag = 100;
  *  @return 初始化完成后的磁贴View
  */
 - (UIView *)buildCardViewWithFrame:(CGRect)cardFrame BackgroundColor:(UIColor *)color Image:(NSString *)imageName Title:(NSString *)title{
-    UIView *view = [[UIView alloc] initWithFrame:cardFrame];
+    MagnetView *view = [[MagnetView alloc] initWithFrame:cardFrame];//
     view.backgroundColor = color;
     
-    CGFloat clickViewWidth = 100.0;
-    CGFloat clickViewHeight = cardFrame.size.height;
-    CGRect clickViewFrame = CGRectMake((cardFrame.size.width - clickViewWidth) / 2.0 , 0, clickViewWidth, clickViewHeight);
-    UIView *clickView = [[UIView alloc] initWithFrame:clickViewFrame];
+    CGFloat clickViewWidth    = 100.0;
+    CGFloat clickViewHeight   = cardFrame.size.height;
+    CGRect clickViewFrame     = CGRectMake((cardFrame.size.width - clickViewWidth) / 2.0 , 0, clickViewWidth, clickViewHeight);
+    UIView *clickView         = [[UIView alloc] initWithFrame:clickViewFrame];
     clickView.backgroundColor = [UIColor clearColor];
-    clickView.tag = ClickViewTag; // 根据tag定位clickView
+    clickView.tag = ClickViewTag;// 根据tag定位clickView
     
-    CGFloat labelWidth = clickViewWidth;
-    CGFloat labelHeight = 21.0;
-    CGFloat imageWH = 60.0;
+    CGFloat labelWidth         = clickViewWidth;
+    CGFloat labelHeight        = 21.0;
+    CGFloat imageWH            = 60.0;
     CGFloat imageLabelDistance = 5.0;
     
     CGFloat imageViewY = (clickViewHeight - (labelHeight + imageWH + imageLabelDistance)) / 2.0;
-    CGFloat labelY = imageViewY + imageWH + imageLabelDistance;
+    CGFloat labelY     = imageViewY + imageWH + imageLabelDistance;
     
     CGRect imageViewFrame = CGRectMake((clickViewWidth - imageWH) / 2.0, imageViewY, imageWH, imageWH);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:imageViewFrame];
@@ -210,6 +219,7 @@ static NSInteger ClickViewTag = 100;
     [clickView addSubview:imageView];
     [clickView addSubview:label];
     [view addSubview:clickView];
+    
     return view;
 }
 
@@ -452,8 +462,6 @@ static NSInteger ClickViewTag = 100;
     }
     
 }
-
-
 
 
 - (void)didReceiveMemoryWarning {

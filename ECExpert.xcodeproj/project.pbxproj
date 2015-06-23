@@ -136,7 +136,11 @@
 		7E219DCD19431BE9006F951A /* Luck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E219DCC19431BE9006F951A /* Luck@2x.png */; };
 		7E38D3761931F0C500A05559 /* navigationbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E38D3751931F0C500A05559 /* navigationbar@2x.png */; };
 		7E4478B918F43AA3009EF02D /* NearbyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4478B718F43AA3009EF02D /* NearbyViewController.m */; };
+		A1882FD51B25761900F7E5D6 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1882FD31B25761800F7E5D6 /* Crashlytics.framework */; };
+		A1882FD61B25761900F7E5D6 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1882FD41B25761800F7E5D6 /* Fabric.framework */; };
 		A1F652EF1B1D5968009B1E0C /* AFNetworkingFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F652EE1B1D5968009B1E0C /* AFNetworkingFactory.m */; };
+		A1FF93971B217FCB007F60AE /* MagnetView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FF93961B217FCB007F60AE /* MagnetView.m */; };
+		A1FF939D1B218ABA007F60AE /* UIScrollView+DeliveryEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FF939C1B218ABA007F60AE /* UIScrollView+DeliveryEvent.m */; };
 		C60C56341B0EC7C400C55014 /* SellerSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C60C56331B0EC7C400C55014 /* SellerSettingViewController.m */; };
 		C680B3F91AFDA04C00735682 /* MainProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C680B3F71AFDA04C00735682 /* MainProductViewController.m */; };
 		C681014318F7EDC4008599BB /* navigationbar_back.png in Resources */ = {isa = PBXBuildFile; fileRef = C681013418F7EDC4008599BB /* navigationbar_back.png */; };
@@ -516,8 +520,14 @@
 		7E38D3751931F0C500A05559 /* navigationbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationbar@2x.png"; sourceTree = "<group>"; };
 		7E4478B618F43AA3009EF02D /* NearbyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyViewController.h; sourceTree = "<group>"; };
 		7E4478B718F43AA3009EF02D /* NearbyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyViewController.m; sourceTree = "<group>"; };
+		A1882FD31B25761800F7E5D6 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		A1882FD41B25761800F7E5D6 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		A1F652ED1B1D5968009B1E0C /* AFNetworkingFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkingFactory.h; sourceTree = "<group>"; };
 		A1F652EE1B1D5968009B1E0C /* AFNetworkingFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkingFactory.m; sourceTree = "<group>"; };
+		A1FF93951B217FCB007F60AE /* MagnetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagnetView.h; sourceTree = "<group>"; };
+		A1FF93961B217FCB007F60AE /* MagnetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagnetView.m; sourceTree = "<group>"; };
+		A1FF939B1B218ABA007F60AE /* UIScrollView+DeliveryEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+DeliveryEvent.h"; sourceTree = "<group>"; };
+		A1FF939C1B218ABA007F60AE /* UIScrollView+DeliveryEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+DeliveryEvent.m"; sourceTree = "<group>"; };
 		C60C56321B0EC7C400C55014 /* SellerSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SellerSettingViewController.h; sourceTree = "<group>"; };
 		C60C56331B0EC7C400C55014 /* SellerSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SellerSettingViewController.m; sourceTree = "<group>"; };
 		C680B3F61AFDA04C00735682 /* MainProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainProductViewController.h; sourceTree = "<group>"; };
@@ -943,6 +953,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1882FD51B25761900F7E5D6 /* Crashlytics.framework in Frameworks */,
+				A1882FD61B25761900F7E5D6 /* Fabric.framework in Frameworks */,
 				C6EAA1BA1B14025E00024700 /* CoreMedia.framework in Frameworks */,
 				C6EAA1B81B14024D00024700 /* CoreVideo.framework in Frameworks */,
 				C6FBC6F51B16B967008A5673 /* libzbar.a in Frameworks */,
@@ -1290,6 +1302,37 @@
 			name = Nearby;
 			sourceTree = "<group>";
 		};
+		A19AABAD1B26EFE9008B6AA9 /* PushNotification */ = {
+			isa = PBXGroup;
+			children = (
+				A19AABAE1B26EFE9008B6AA9 /* Model */,
+				A19AABAF1B26EFE9008B6AA9 /* View */,
+				A19AABB01B26EFE9008B6AA9 /* ViewController */,
+			);
+			path = PushNotification;
+			sourceTree = "<group>";
+		};
+		A19AABAE1B26EFE9008B6AA9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A19AABAF1B26EFE9008B6AA9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A19AABB01B26EFE9008B6AA9 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		C6892BA81AFC5A980042E326 /* QRCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -1389,6 +1432,7 @@
 		C69E32751AFAF6FD004AFCE4 /* ECig */ = {
 			isa = PBXGroup;
 			children = (
+				A19AABAD1B26EFE9008B6AA9 /* PushNotification */,
 				C6892BB71AFCAE630042E326 /* Trade */,
 				C6892BA81AFC5A980042E326 /* QRCode */,
 				C69E328E1AFAFBEB004AFCE4 /* Main */,
@@ -1490,6 +1534,8 @@
 		C69E32921AFAFBEB004AFCE4 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A1FF93951B217FCB007F60AE /* MagnetView.h */,
+				A1FF93961B217FCB007F60AE /* MagnetView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1601,6 +1647,8 @@
 				C6AC0DA41B15CB2300D716EF /* UIAlertView+Block.m */,
 				A1F652ED1B1D5968009B1E0C /* AFNetworkingFactory.h */,
 				A1F652EE1B1D5968009B1E0C /* AFNetworkingFactory.m */,
+				A1FF939B1B218ABA007F60AE /* UIScrollView+DeliveryEvent.h */,
+				A1FF939C1B218ABA007F60AE /* UIScrollView+DeliveryEvent.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1627,6 +1675,8 @@
 		C6AC985118F234F500CCF79C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A1882FD31B25761800F7E5D6 /* Crashlytics.framework */,
+				A1882FD41B25761800F7E5D6 /* Fabric.framework */,
 				C6EAA1B91B14025E00024700 /* CoreMedia.framework */,
 				C6EAA1B71B14024D00024700 /* CoreVideo.framework */,
 				C6EAA1B41B14020500024700 /* libiconv.2.4.0.dylib */,
@@ -2342,6 +2392,7 @@
 				C6AC984B18F234F500CCF79C /* Sources */,
 				C6AC984C18F234F500CCF79C /* Frameworks */,
 				C6AC984D18F234F500CCF79C /* Resources */,
+				A1882FD21B25747200F7E5D6 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2362,7 +2413,7 @@
 				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					C6AC984E18F234F500CCF79C = {
-						DevelopmentTeam = PB7L3A28BR;
+						DevelopmentTeam = F6B8G7X29N;
 					};
 				};
 			};
@@ -2522,6 +2573,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A1882FD21B25747200F7E5D6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run ee283571f9f34b393fca1b234c4d4afa26c79cf5 66375f0a735fe2a49dbce21b47aae49fc9eeb3c7e4696b980d985ae9ba680c4e";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C6AC984B18F234F500CCF79C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -2614,6 +2681,7 @@
 				6B1E3BA7192B183300C67C70 /* LoginViewController.m in Sources */,
 				C6FC22371B15B66100547A0A /* MJRefreshGifHeader.m in Sources */,
 				C6FC21CF1B15B4C900547A0A /* PostImageViewController.m in Sources */,
+				A1FF93971B217FCB007F60AE /* MagnetView.m in Sources */,
 				C6FC225B1B15B6D900547A0A /* AFURLSessionManager.m in Sources */,
 				C6D709481B059A6800B625AF /* TradeRecordViewController.m in Sources */,
 				6B6608B81910D96000481C71 /* TableGameViewController.m in Sources */,
@@ -2670,6 +2738,7 @@
 				C6FC22121B15B65200547A0A /* MJFoundation.m in Sources */,
 				C6FC22341B15B66100547A0A /* MJRefreshConst.m in Sources */,
 				6BEC98341A31861800E437F4 /* CigAndWineViewController.m in Sources */,
+				A1FF939D1B218ABA007F60AE /* UIScrollView+DeliveryEvent.m in Sources */,
 				C6FC22551B15B6D900547A0A /* AFHTTPSessionManager.m in Sources */,
 				C6AC0D8F1B15BEAD00D716EF /* Dialog.m in Sources */,
 				C6892BBE1AFCAE870042E326 /* TradeInputViewController.m in Sources */,
@@ -2761,7 +2830,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Huizhou KIMREE Technology Co., Ltd. (F6B8G7X29N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Huizhou KIMREE Technology Co., Ltd. (F6B8G7X29N)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2791,9 +2860,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Huizhou KIMREE Technology Co., Ltd. (F6B8G7X29N)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KIMREE/ECExpert-Prefix.pch";
@@ -2848,7 +2917,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Huizhou KIMREE Technology Co., Ltd. (F6B8G7X29N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Huizhou KIMREE Technology Co., Ltd. (F6B8G7X29N)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2891,7 +2960,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Huizhou KIMREE Technology Co., Ltd. (F6B8G7X29N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Huizhou KIMREE Technology Co., Ltd. (F6B8G7X29N)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2915,9 +2984,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Huizhou KIMREE Technology Co., Ltd. (F6B8G7X29N)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KIMREE/ECExpert-Prefix.pch";
@@ -2959,9 +3028,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Huizhou KIMREE Technology Co., Ltd. (F6B8G7X29N)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KIMREE/ECExpert-Prefix.pch";

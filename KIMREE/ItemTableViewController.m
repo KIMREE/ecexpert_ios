@@ -8,6 +8,8 @@
 
 #import "ItemTableViewController.h"
 #import "LoginViewController.h"
+#import "AppDelegate.h"
+#import "AFNetworkingFactory.h"
 
 @interface ItemTableViewController ()
 
@@ -79,25 +81,24 @@
 -(void)save{
     
     _saveBtn.enabled=NO;
-       NSString *url =[[NSString alloc] init];
-        if ([_itemTitle isEqualToString:NSLocalizedString(@"Password", "")]) {
-            url=API_CHANGEPASSWORD_URL;
-        }else
-        {
-            url=API_EDITUSERINFO_URL;
-        }
+    NSString *url =[[NSString alloc] init];
+    if ([_itemTitle isEqualToString:NSLocalizedString(@"Password", "")]) {
+        url=API_CHANGEPASSWORD_URL_NEW;
+    }else
+    {
+        url=API_EDITUSERINFO_URL_NEW;
+    }
     
-//提交
+    //提交
     if ([self.title isEqualToString:NSLocalizedString(@"Password", "")]) {
         if ([self checkValidityTextField]) {
-   
+            
             [self LinkNetWork:url];
         }
     }else
         
-
+        
         [self LinkNetWork:url];
-    
     
 }
 
@@ -312,7 +313,10 @@
     [_request setShouldAttemptPersistentConnection:NO];
     [_request setTimeOutSeconds:10];
     
-    if ([strUrl isEqualToString:API_GETUSERINFO_URL]) {
+    if ([strUrl isEqualToString:API_GETUSERINFO_URL_NEW]) {
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        NSDictionary *loginUserInfo = appDelegate.loginUser;
+        [_request setPostValue:[loginUserInfo objectForKey:@"usertype"] forKey:@"usertype"];
         _request.tag=102;
         
     }else {
@@ -383,6 +387,7 @@
 - (void)requestFinished:(ASIFormDataRequest *)request
 {
     NSData *jsonData = [request.responseString dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     NSError *error;
     NSMutableDictionary *rootDic = [[CJSONDeserializer deserializer] deserialize:jsonData error:&error];
     int status=[[rootDic objectForKey:@"code"] intValue];
@@ -394,6 +399,8 @@
             [[LocalStroge sharedInstance] addObject:[rootDic objectForKey:@"data"] forKey:F_USER_INFORMATION filePath:NSDocumentDirectory];
             [self.navigationController popViewControllerAnimated:YES];
             
+            // 修改数据后要重新查询登录用户信息，查询成功后需要刷新界面显示，在需要刷新显示数据的地方接收该通知进行处理
+            [[NSNotificationCenter defaultCenter] postNotificationName:KM_REFRESH_LOGIN_USER_INFO object:nil];
         }
         else{
             
@@ -406,7 +413,7 @@
         if (status==1) {
             
            
-            [self LinkNetWork:API_GETUSERINFO_URL];
+            [self LinkNetWork:API_GETUSERINFO_URL_NEW];
             //[MMProgressHUD dismissWithSuccess:nil];
             [JDStatusBarNotification showWithStatus:NSLocalizedString(@"Successful modification!", "") dismissAfter:1.0f];
 

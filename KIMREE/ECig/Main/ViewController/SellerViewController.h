@@ -10,14 +10,14 @@
 
 @interface SellerViewController : BaseViewController
 
-@property (weak, nonatomic) IBOutlet UIView *giftRecordView;
-@property (weak, nonatomic) IBOutlet UIView *tradeView;
-@property (weak, nonatomic) IBOutlet UIView *sellRecordView;
+@property (weak, nonatomic) IBOutlet UIView      *giftRecordView;
+@property (weak, nonatomic) IBOutlet UIView      *tradeView;
+@property (weak, nonatomic) IBOutlet UIView      *sellRecordView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *dealerImageView;
-@property (weak, nonatomic) IBOutlet UILabel *dealerNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *customerNameLabel; // dealerEmail
-@property (weak, nonatomic) IBOutlet UILabel *dealerPhoneLabel;
+@property (weak, nonatomic) IBOutlet UILabel     *dealerNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel     *customerNameLabel;// dealerEmail
+@property (weak, nonatomic) IBOutlet UILabel     *dealerPhoneLabel;
 
 
 @end

@@ -12,12 +12,12 @@
 
 @interface GiftProductViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) UITableView     *tableView;
 
-@property (strong, nonatomic) UITextField *totalField;
-@property (strong, nonatomic) UITextField *dispatchField;
-@property (strong, nonatomic) UIButton *effectiveDateBtn;
-@property (strong, nonatomic) UIButton *expirationDateBtn;
+@property (strong, nonatomic) UITextField     *totalField;
+@property (strong, nonatomic) UITextField     *dispatchField;
+@property (strong, nonatomic) UIButton        *effectiveDateBtn;
+@property (strong, nonatomic) UIButton        *expirationDateBtn;
 
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
@@ -124,10 +124,10 @@
     UIView *contentRightView = [[UIView alloc] initWithFrame:contentRightViewFrame];
     [cell.contentView addSubview:contentRightView];
     
-    CGRect minusBtnFrame = CGRectMake(0, (44 - 22) / 2.0, 22, 22);
+    CGRect minusBtnFrame   = CGRectMake(0, (44 - 22) / 2.0, 22, 22);
     CGRect countFieldFrame = CGRectMake(0 + 22, (44 - 22) / 2.0, 60, 22);
-    CGRect addBtnFrame = CGRectMake(22 + 60, (44 - 30) / 2.0, 30, 30);
-    CGRect dateBtnFrame = CGRectMake(0, (44 - 30) / 2.0, 120, 30);
+    CGRect addBtnFrame     = CGRectMake(22 + 60, (44 - 30) / 2.0, 30, 30);
+    CGRect dateBtnFrame    = CGRectMake(0, (44 - 30) / 2.0, 120, 30);
     
     CGRect labelFrame = CGRectMake(0, (44 - 22) / 2.0, contentRightViewFrame.size.width, 22);
     UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];

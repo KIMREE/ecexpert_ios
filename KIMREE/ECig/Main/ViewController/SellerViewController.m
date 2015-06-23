@@ -22,6 +22,10 @@
 
 @implementation SellerViewController
 
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KM_REFRESH_LOGIN_USER_INFO object:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -43,7 +47,11 @@
     
     // 点击手势
     [self initTapGR];
+    
+    // 监控登录用户数据刷新通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initPageInfo) name:KM_REFRESH_LOGIN_USER_INFO object:nil];
 }
+
 
 - (void)initPageInfo{
     NSString *userName = [[[LocalStroge sharedInstance] getObjectAtKey:F_USER_INFORMATION filePath:NSDocumentDirectory] objectForKey:@"customer_nickname"];
@@ -100,7 +108,7 @@
         [vc goBack];
         
         NSData *jsonData = [vipCard dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];        
+        NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
         
         blockSelf.progressHUD.mode = MBProgressHUDModeIndeterminate;
         blockSelf.progressHUD.labelText = @"Loading...";
@@ -146,13 +154,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

@@ -10,14 +10,14 @@
 
 @interface CustomerViewController : BaseViewController
 
-@property (strong, nonatomic) UIView *vipCardView;
-@property (strong, nonatomic) UIView *showProductsView;
-@property (strong, nonatomic) UIView *nearbyStoreView;
-@property (strong, nonatomic) UIView *feedbackView;
-@property (strong, nonatomic) UIView *recordView;
+@property (strong, nonatomic) UIView      *vipCardView;
+@property (strong, nonatomic) UIView      *showProductsView;
+@property (strong, nonatomic) UIView      *nearbyStoreView;
+@property (strong, nonatomic) UIView      *feedbackView;
+@property (strong, nonatomic) UIView      *recordView;
 
 @property (strong, nonatomic) UIImageView *userImageView;
-@property (strong, nonatomic) UILabel *userNameLabel;
-@property (strong, nonatomic) UILabel *vipNumberLabel;
+@property (strong, nonatomic) UILabel     *userNameLabel;
+@property (strong, nonatomic) UILabel     *vipNumberLabel;
 
 @end

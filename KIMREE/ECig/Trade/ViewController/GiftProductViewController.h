@@ -17,9 +17,9 @@ typedef enum {
 
 @interface GiftProductViewController : BaseViewController
 
-@property (strong, nonatomic) NSMutableArray *giftArray;
-@property (strong, nonatomic) ProductModel *giftProduct;
-@property (strong, nonatomic) UITableView *supTableView;
+@property (strong, nonatomic) NSMutableArray   *giftArray;
+@property (strong, nonatomic) ProductModel     *giftProduct;
+@property (strong, nonatomic) UITableView      *supTableView;
 
 // 界面是否处于编辑状态，用于区别 录入交易 和 查看交易记录 功能， default GiftPageEditTypeNone
 @property (assign, nonatomic) GiftPageEditType pageEditType;

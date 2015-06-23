@@ -114,9 +114,9 @@
     UIView *contentRightView = [[UIView alloc] initWithFrame:contentRightViewFrame];
     [cell.contentView addSubview:contentRightView];
     
-    CGRect minusBtnFrame = CGRectMake(0, (44 - 22) / 2.0, 22, 22);
+    CGRect minusBtnFrame   = CGRectMake(0, (44 - 22) / 2.0, 22, 22);
     CGRect countFieldFrame = CGRectMake(0 + 22, (44 - 22) / 2.0, 60, 22);
-    CGRect addBtnFrame = CGRectMake(22 + 60, (44 - 30) / 2.0, 30, 30);
+    CGRect addBtnFrame     = CGRectMake(22 + 60, (44 - 30) / 2.0, 30, 30);
     
     CGRect labelFrame = CGRectMake(0, (44 - 22) / 2.0, contentRightViewFrame.size.width, 22);
     UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
@@ -196,7 +196,7 @@
 
 - (void)countButtonAction:(UIButton *)btn{
     // button tag : 1 add    2 minus
-    NSInteger btnTag = btn.tag;
+    NSInteger btnTag      = btn.tag;
     NSInteger countNumber = [self.countField.text integerValue];
     
     if (btnTag == 1) {
@@ -210,7 +210,7 @@
 #pragma mark - UITextFieldDelegate
 - (void)textFieldDidChange:(NSNotification*) notification{
     UITextField *textField = (UITextField *)[notification object];
-    NSString *textValue = textField.text;
+    NSString *textValue    = textField.text;
     NSString *removeString = objc_getAssociatedObject(textField, "RemoveString");
     
     NSRange range = [textValue rangeOfString:removeString];

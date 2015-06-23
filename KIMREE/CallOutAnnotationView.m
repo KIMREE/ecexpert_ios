@@ -29,7 +29,7 @@
         if (delegate) {
             self.delegate = delegate;
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
-            self.userInteractionEnabled = YES;
+//            self.userInteractionEnabled = YES;
             [self addGestureRecognizer:tap];
         }
         

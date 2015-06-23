@@ -21,17 +21,17 @@
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
 
 // 查询出来的数据
-@property (strong, nonatomic) NSMutableArray *recordArray;
+@property (strong, nonatomic) NSMutableArray      *recordArray;
 
 // 组装后显示到界面的数据
-@property (strong, nonatomic) NSMutableArray *sectionArray;
+@property (strong, nonatomic) NSMutableArray      *sectionArray;
 @property (strong, nonatomic) NSMutableDictionary *sectionCellDic;
 
 // request params
-@property (assign, nonatomic) NSInteger pageSize;
-@property (assign, nonatomic) NSInteger pageNo;
-@property (assign, nonatomic) NSInteger recordOwnerId;
-@property (assign, nonatomic) UserType type;
+@property (assign, nonatomic) NSInteger           pageSize;
+@property (assign, nonatomic) NSInteger           pageNo;
+@property (assign, nonatomic) NSInteger           recordOwnerId;
+@property (assign, nonatomic) UserType            type;
 
 @property (strong, nonatomic) NSMutableDictionary *params;
 
@@ -62,6 +62,7 @@
     
     [self.tableView addLegendFooterWithRefreshingTarget:self refreshingAction:@selector(getRemoteRecord)];
     [self.tableView.footer beginRefreshing];
+    self.tableView.footer.textColor = [UIColor whiteColor]; // 颜色设置要在设置刷新之后执行，不然会被默认颜色覆盖
 }
 
 - (void) getRemoteRecord{
@@ -257,9 +258,9 @@
 //    return sectionHeaderView;
 //}
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 5;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+//    return 5;
+//}
 
 /*
 #pragma mark - Navigation

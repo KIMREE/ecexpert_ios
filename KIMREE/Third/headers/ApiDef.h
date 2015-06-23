@@ -19,19 +19,22 @@
 #define API_TRADE_INPUT_URL @"http://www.kimree.com.cn/app/?action=typetrade"  // 录入交易
 #define API_TRADE_RECORD_SELECT_URL @"http://www.kimree.com.cn/app/?action=selecttrade" // 查看交易记录
 #define API_TRADE_RECORD_DETAIL_URL @"http://www.kimree.com.cn/app/?action=tradeinfo"  // 交易记录详情
-#define API_EDITUSERINFO_URL_NEW @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=moduserinfo"       //修改个人信息
-#define API_MODIFY_PASSWORD_NEW @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=modpassword"               //修改个人密码
-#define API_UPLOADUSERHEADER_URL_NEW @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=moduserimage"  //修改用户图片
+
+#define API_EDITUSERINFO_URL_NEW @"http://www.kimree.com.cn/app/?action=moduser&modway=moduserinfo"       //修改个人信息
+#define API_MODIFY_PASSWORD_NEW @"http://www.kimree.com.cn/app/?action=moduser&modway=modpassword"               //修改个人密码
+#define API_CHANGEPASSWORD_URL_NEW @"http://www.kimree.com.cn/app/?action=moduser&modway=modpassword"   //更改密码
+#define API_UPLOADUSERHEADER_URL_NEW @"http://www.kimree.com.cn/app/?action=moduser&modway=moduserimage"  //修改用户图片
 
 
 // 服务器地址
 #define API_POSTBAR_URL @"http://www.ecigarfan.com/api/api.php?action=postbar" //v1.0
-#define API_LOGIN_URL @"http://www.ecigarfan.com/api/api.php?action=login"             //登陆
-#define API_SIGNIN_URL @"http://www.ecigarfan.com/api/api.php?action=register"         //注册
-#define API_GETUSERINFO_URL @"http://www.ecigarfan.com/api/api.php?action=getuserinfo" //获取个人信息
-#define API_EDITUSERINFO_URL @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=moduserinfo"       //修改个人信息
-#define API_MODIFY_PASSWORD @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=modpassword"               //修改个人密码
-#define API_UPLOADUSERHEADER_URL @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=moduserimage"  //修改用户图片
+//#define API_LOGIN_URL @"http://www.ecigarfan.com/api/api.php?action=login"             //登陆
+//#define API_SIGNIN_URL @"http://www.ecigarfan.com/api/api.php?action=register"         //注册
+//#define API_GETUSERINFO_URL @"http://www.ecigarfan.com/api/api.php?action=getuserinfo" //获取个人信息
+//#define API_EDITUSERINFO_URL @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=moduserinfo"       //修改个人信息
+//#define API_MODIFY_PASSWORD @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=modpassword"               //修改个人密码
+//#define API_UPLOADUSERHEADER_URL @"http://www.ecigarfan.com/api/api.php?action=moduser&modway=moduserimage"  //修改用户图片
+
 //旧接口
 //#define API_DEALER_URL @"http://www.ecigarfan.com/api/api.php?action=getdealer&effect_tm="                 //获取经销商信息
 #define API_DEALER_URL @"http://www.ecig100.com/api/?action=getDealer"                 //获取经销商及烟酒商信息

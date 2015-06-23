@@ -21,15 +21,15 @@
 
 @interface TradeInputViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) NSMutableArray *customerArray;
-@property (strong, nonatomic) NSMutableArray *productArray;
-@property (strong, nonatomic) NSMutableArray *giftArray;
+@property (strong, nonatomic) UITableView                   *tableView;
+@property (strong, nonatomic) NSMutableArray                *customerArray;
+@property (strong, nonatomic) NSMutableArray                *productArray;
+@property (strong, nonatomic) NSMutableArray                *giftArray;
 
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
 
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
-@property (strong, nonatomic) NSString *dateString;
+@property (strong, nonatomic) NSDateFormatter               *dateFormatter;
+@property (strong, nonatomic) NSString                      *dateString;
 
 @end
 
@@ -169,13 +169,13 @@
     if (indexPath.section == 0) {
         if (self.customerArray.count > 0) {
             cell.accessoryType = UITableViewCellAccessoryNone;
-            NSDictionary *customer = [self.customerArray objectAtIndex:0];
-            NSString *customer_name = [customer objectForKey:@"customer_name"];
+            NSDictionary *customer      = [self.customerArray objectAtIndex:0];
+            NSString *customer_name     = [customer objectForKey:@"customer_name"];
             NSString *customer_nickname = [customer objectForKey:@"customer_nickname"];
-            NSString *customer_vip = [customer objectForKey:@"customer_vip"];
-            NSString *customer_phone = [customer objectForKey:@"customer_phone"];
+            NSString *customer_vip      = [customer objectForKey:@"customer_vip"];
+            NSString *customer_phone    = [customer objectForKey:@"customer_phone"];
             
-            NSString *text = [NSString stringWithFormat:@"%@ (电话:%@)",customer_name, customer_nickname];
+            NSString *text = [NSString stringWithFormat:@"%@ (电话:%@)",customer_name, customer_phone];
             cell.textLabel.text = text;
             cell.detailTextLabel.text = [NSString stringWithFormat:@"会员卡号:%@", customer_vip];
         }else{
@@ -236,7 +236,7 @@
     NSInteger row = indexPath.row;
     
     if (section == 0 && self.customerArray.count > 0) {
-        NSLog(@"customer");
+        //TODO: customer
     }else if (section == 1 && self.productArray.count > 0){
         
         MainProductViewController *mainProductVC = [[MainProductViewController alloc] init];
@@ -320,7 +320,7 @@
         blockSelf.progressHUD.mode = MBProgressHUDModeIndeterminate;
         blockSelf.progressHUD.labelText = @"Loading...";
         [blockSelf.progressHUD show:YES];
-        [self.manager POST:API_CHECKVIP_URL parameters:jsonDic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [blockSelf.manager POST:API_CHECKVIP_URL parameters:jsonDic success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary *jsonDic = (NSDictionary *)responseObject;
             NSInteger code = [[jsonDic objectForKey:@"code"] integerValue];
             if (code == 1) {

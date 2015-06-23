@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, TradeRecordType) {
 
 @property (assign, nonatomic) TradeRecordType tradeRecordType;
 
-@property (strong, nonatomic) NSDictionary *customerInfoDic;
-@property (strong, nonatomic) NSDictionary *sellerInfoDic;
+@property (strong, nonatomic) NSDictionary    *customerInfoDic;
+@property (strong, nonatomic) NSDictionary    *sellerInfoDic;
 
 @end

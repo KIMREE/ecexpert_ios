@@ -39,6 +39,11 @@
     #import "ASIDownloadCache.h"
     #import "ErrorHelper.h"
     #import "UIAlertView+Block.h"
+    #import "UIScrollView+DeliveryEvent.h"
+
+    #import <Fabric/Fabric.h>
+    #import <Crashlytics/Crashlytics.h>
+
 #endif
 
 #define IS_INCH4 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
@@ -63,6 +68,8 @@
 
 #define KM_INFO_PLIST ([[NSBundle mainBundle] infoDictionary])
 
+#define KM_REFRESH_LOGIN_USER_INFO @"REFRESH_USER_INFO"
+
 // english : en
 // chinese : zh-Hans
 #define KM_OS_LANGUAGE ([[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] firstObject])
@@ -82,6 +89,6 @@
 #define RGB(R,G,B) (RGBA(R,G,B,1))
 
 #define KM_COLOR_WHITE ([UIColor whiteColor])
-#define KM_COLOR_NAVIGATION_BAR (RGB(208,16,51))
-//#define KM_COLOR_NAVIGATION_BAR (RGB(236,85,58))
+#define KM_COLOR_NAVIGATION_BAR (RGB(208, 6, 51))
+
 

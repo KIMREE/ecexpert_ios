@@ -17,11 +17,9 @@
     UIView *feedbackView,*aboutView;
 }
 
-@property (strong,nonatomic) ASIFormDataRequest *request;
-
-@property (strong,nonatomic) UITextView *information;
-
-@property (strong, nonatomic) UITableView *tableView;
+@property (strong,nonatomic ) ASIFormDataRequest *request;
+@property (strong,nonatomic ) UITextView         *information;
+@property (strong, nonatomic) UITableView        *tableView;
 
 @end
 
